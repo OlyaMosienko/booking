@@ -1,0 +1,67 @@
+.room {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 24px;
+
+	&__thumb {
+		width: 100%;
+		& img {
+			width: 100%;
+			border-radius: 8px;
+			object-fit: cover;
+			aspect-ratio: 4/3;
+		}
+	}
+
+	&__type {
+		font-size: 14px;
+		font-weight: 700;
+		text-transform: capitalize;
+		line-height: 1;
+		margin: 16px 0;
+		padding: 6px 8px;
+		background: var(--tag-bg);
+		border-radius: 4px;
+		width: max-content;
+	}
+
+	&__description {
+		margin-top: 18px;
+    	max-width: 440px;
+	}
+
+	&__row {
+		display: flex;
+		align-items: baseline;
+		gap: 16px;
+	}
+
+	&__reviews {
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	&__amenities {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+
+		& div {
+			font-size: 14px;
+			line-height: 1;
+			padding: 4px 8px;
+			border: 1px solid #434343;
+			border-radius: 4px;
+			width: max-content;
+		}
+	}
+
+	&__price {
+		font-size: 20px;
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin: 24px 0 18px;
+	}
+}

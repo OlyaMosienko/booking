@@ -1,0 +1,65 @@
+.modal {
+	--transition-time: .3s;
+
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 100;
+	background-color: rgba(0,0,0, 0.5);
+	backdrop-filter: blur(10px);
+	cursor: pointer;
+	overflow-y: auto;
+	overflow-x: hidden;
+	text-align: center;
+	opacity: 0;
+	visibility: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	transition: opacity var(--transition-time), visibility var(--transition-time);
+
+	&:global(.active) {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	&__content {
+		position: relative;
+		top: 0;
+		width: 100%;
+		max-width: 400px;
+		padding: 32px;
+		background-color: var(--form-bg);
+		border-radius: 8px;
+		cursor: default;
+		text-align: left;
+		animation: modal-slide-top-animation .6s ease;
+	}
+}
+
+.close {
+	display: inline-flex;
+	padding: 10px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+	font-size: 9px;
+    font-weight: 900;
+    background: transparent;
+	color: inherit;
+    border: none;
+}
+
+@keyframes modal-slide-top-animation {
+	from {
+		top: -100%;
+	}
+	to {
+		top: 0;
+	}
+}
+

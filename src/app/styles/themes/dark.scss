@@ -1,0 +1,30 @@
+.app.dark {
+	--bg-color: #11151E;
+    --primary-color: #FFA500;
+    --secondary-color: #FFFFFF;
+
+	--border-color: #3A3A3A;
+
+	--tag-bg: #373B47;
+
+	--form-bg: #22252D;
+	--input-bg: #454852;
+
+	position: relative;
+	z-index: 10;
+
+	&::before {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		background-image: url(./clouds-bg.png);
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: top center;
+		height: 100%;
+		z-index: -10;
+	}
+}

@@ -1,0 +1,36 @@
+@forward './reset.scss';
+@forward './variables/global.scss';
+@forward './themes/dark.scss';
+@forward './themes/light.scss';
+
+body {
+	font-family: var(--font-main);
+	font-size: 16px;
+}
+
+.app {
+    font: var(--font-m);
+    background: var(--bg-color);
+    color: var(--secondary-color);
+	width: 100%;
+    min-height: 100vh;
+}
+
+.content {
+	padding-top: 16px;
+	padding-bottom: 160px;
+	// TODO: пока просто для верстки, позже поменять стили на актуальные
+}
+
+.container {
+	max-width: 1400px;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin: 0 auto;
+}
+
+.flex {
+	display: flex;
+	flex-direction: column;
+	gap: 120px;
+}

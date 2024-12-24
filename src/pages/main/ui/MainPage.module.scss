@@ -1,0 +1,181 @@
+.main {
+	&__box {
+		display: flex;
+		gap: 24px;
+		position: relative;
+	}
+
+	&__banner {
+		max-width: 925px;
+		height: 410px;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: end;
+		padding: 40px;
+		gap: 12px;
+		color: #fff;
+		& img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 8px;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: -1;
+			filter: brightness(0.6);
+		}
+		& .description {
+			max-width: 400px;
+		}
+	}
+
+	&__left {
+		flex-basis: 66%;
+	}
+
+	&__right {
+		flex-basis: 33%;
+		height: max-content;
+		position: sticky;
+		top: 0;
+	}
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	width: 100%;
+	max-width: 450px;
+	background: var(--form-bg);
+	padding: 32px;
+	border-radius: 8px;
+}
+
+.dropdown {
+	color: var(--secondary-color);
+	background: var(--input-bg);
+	border: 1px solid var(--input-bg);
+	border-radius: 8px;
+	outline: none;
+	padding: 12px 0 12px 18px;
+	width: 100%;
+	text-align: left;
+	transition: .2s;
+	position: relative;
+
+	&__inner {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		background: var(--input-bg);
+		border-radius: 8px;
+		margin-top: 8px;
+		padding: 12px 18px;
+	}
+	&__row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		& span {
+			display: block;
+			font-size: 14px;
+			color: #ccc;
+		}
+		& button {
+			font-size: 18px;
+			font-weight: 600;
+			line-height: 1;
+			color: var(--secondary-color);
+			background: var(--tag-bg);
+			padding: 14px 18px;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+
+			&:disabled {
+				opacity: 0.8;
+				cursor: default;
+			}
+		}
+	}
+	&__counter {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 6px;
+		font-weight: 600;
+		width: 50%;
+	}
+	&__btns {
+		display: flex;
+		gap: 8px;
+		margin-top: 16px;
+	}
+
+	&__rooms {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 108px 24px;
+		transition: filter 0.3s;
+
+		& img {
+			width: 100%;
+			object-fit: cover;
+			border-radius: 4px;
+		}
+	}
+}
+
+:global .form-select {
+	&__control {
+		background-color: var(--input-bg) !important;
+		border: none !important;
+		border-radius: 8px !important;
+		box-shadow: none !important;
+		transition: 0.3s;
+
+		&:hover, &--menu-is-open {
+			box-shadow: 0 0 3px 0 var(--primary-color) !important;
+		}
+	}
+	&__value-container {
+		padding: 12px 0 12px 18px !important;
+	}
+	&__single-value {
+		color: var(--secondary-color) !important;
+		line-height: 1.2;
+		margin: 0 !important;
+	}
+	&__input-container {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	&__indicator-separator {
+		display: none;
+	}
+	&__menu {
+		border-radius: 8px !important;
+		background-color: var(--input-bg) !important;
+		box-shadow: none;
+	}
+	&__menu-list {
+		border-radius: 8px !important;
+		padding: 0 !important;
+	}
+	&__option {
+		padding: 12px 0 12px 18px !important;
+		&--is-focused, &--is-selected {
+			color: var(--secondary-color) !important;
+			background-color: var(--tag-bg) !important;
+		}
+	}
+}

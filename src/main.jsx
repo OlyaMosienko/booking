@@ -1,10 +1,18 @@
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './App.jsx';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
+import { StoreProvider } from './app/providers/StoreProvider';
+import { ThemeProvider } from './app/providers/ThemeProvider';
+import { ModalProvider } from './app/providers/ModalProvider';
+import { App } from './app/App';
 
 createRoot(document.getElementById('root')).render(
-	<StrictMode>
-		<App />
-	</StrictMode>,
+	<StoreProvider>
+		<BrowserRouter>
+			<ThemeProvider>
+				<ModalProvider>
+					<App />
+				</ModalProvider>
+			</ThemeProvider>
+		</BrowserRouter>
+	</StoreProvider>,
 );

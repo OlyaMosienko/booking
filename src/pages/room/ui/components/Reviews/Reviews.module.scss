@@ -1,0 +1,28 @@
+.reviews {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	&__list {
+		margin: 24px 0 56px;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		width: 100%;
+		max-width: 700px;
+	}
+	&__item {
+		background-color: var(--form-bg);
+		padding: 32px;
+		border-radius: 8px;
+	}
+}
+
+.reviews-item {
+	&__head {
+		font-weight: 600;
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 20px;
+	}
+}

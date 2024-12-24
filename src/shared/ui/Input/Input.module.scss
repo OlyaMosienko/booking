@@ -1,0 +1,13 @@
+.input {
+	color: var(--secondary-color);
+	background: var(--input-bg);
+	border: 1px solid var(--input-bg);
+	border-radius: 8px;
+	outline: none;
+	padding: 12px 0 12px 18px;
+	transition: .2s;
+
+	&::placeholder {
+		color: rgba(var(--secondary-color), 70%);
+	}
+}
