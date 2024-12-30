@@ -5,12 +5,8 @@ import { Title } from '@/shared/ui/Title/Title';
 import { DateRange } from '@/shared/ui/DateRange/DateRange';
 import styles from './MainPage.module.scss';
 import { useServerRequest } from '@/shared/hooks';
-import { useDispatch, useSelector } from 'react-redux';
-import { removeFavoriteAsync } from '@/entities/favorites/model/actions/removeFavoriteAsync';
-import { addFavoriteAsync } from '@/entities/favorites/model/actions/addFavoriteAsync';
-import { selectUserId } from '@/entities/user/model/selectors';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getFavoritesDetails } from '@/entities/favorites/model/actions/getFavoritesDetails';
 
 const availabilityOptions = [
 	{ value: 'false', label: 'Занято' },
@@ -25,11 +21,14 @@ const roomTypeOptions = [
 
 export const MainPage = () => {
 	const [rooms, setRooms] = useState([]);
-	const [favorites, setFavorites] = useState([]);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [fetching, setFetching] = useState(true);
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [adultCount, setAdultCount] = useState(1);
 	const [childCount, setChildCount] = useState(0);
+
+	const PAGINATION_LIMIT = 4;
 
 	const incrementAdult = () => {
 		setAdultCount(adultCount + 1);
@@ -49,30 +48,21 @@ export const MainPage = () => {
 	};
 
 	const dispatch = useDispatch();
-	const userId = useSelector(selectUserId);
 	const requestServer = useServerRequest();
 
+	console.log(currentPage);
+
 	useEffect(() => {
-		requestServer('fetchRooms').then((roomsData) => {
-			setRooms(roomsData.res);
-		});
-
-		if (userId) {
-			dispatch(getFavoritesDetails(requestServer, userId)).then((favoritesData) => {
-				setFavorites(favoritesData);
-			});
+		if (fetching) {
+			requestServer('fetchRooms', PAGINATION_LIMIT, currentPage)
+				.then((roomsData) => {
+					setRooms([...rooms, ...roomsData.res]);
+				})
+				.finally(() => setFetching(false));
 		}
-	}, [dispatch, requestServer, userId]);
 
-	const handleFavoriteToggle = (id) => {
-		if (favorites?.some((fav) => fav.roomId === id)) {
-			const favorite = favorites.find((fav) => fav.roomId === id);
-
-			dispatch(removeFavoriteAsync(requestServer, userId, favorite.id));
-		} else {
-			dispatch(addFavoriteAsync(requestServer, userId, id));
-		}
-	};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dispatch, requestServer, currentPage, fetching]);
 
 	return (
 		<div className={styles.main__box}>
@@ -94,14 +84,12 @@ export const MainPage = () => {
 								</div>
 							</Link>
 							<p>{title}</p>
-							<button onClick={() => handleFavoriteToggle(id)}>
-								{favorites?.some((fav) => fav.roomId === id)
-									? 'Убрать из избранного'
-									: 'Добавить в избранное'}
-							</button>
 						</div>
 					))}
 				</section>
+				<Button onClick={() => setCurrentPage((prev) => prev + 1)}>
+					Загрузить еще
+				</Button>
 			</div>
 			<div className={styles.main__right}>
 				<form className={styles.form}>

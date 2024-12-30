@@ -1,12 +1,14 @@
 import { getRooms } from '../api';
 import { transformRoom } from '../transformers';
 
-export const fetchRooms = async () => {
+export const fetchRooms = async (limit, page) => {
 	let rooms;
 	let error;
 
+	console.log('limit:', limit, 'page:', page);
+
 	try {
-		rooms = await getRooms();
+		rooms = await getRooms(limit, page);
 	} catch (roomError) {
 		error = roomError;
 	}

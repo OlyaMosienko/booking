@@ -44,6 +44,19 @@
 		position: sticky;
 		top: 0;
 	}
+
+	&__rooms {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 108px 24px;
+		transition: filter 0.3s;
+
+		& img {
+			width: 100%;
+			object-fit: cover;
+			border-radius: 4px;
+		}
+	}
 }
 
 .form {
@@ -119,19 +132,6 @@
 		display: flex;
 		gap: 8px;
 		margin-top: 16px;
-	}
-
-	&__rooms {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 108px 24px;
-		transition: filter 0.3s;
-
-		& img {
-			width: 100%;
-			object-fit: cover;
-			border-radius: 4px;
-		}
 	}
 }
 
