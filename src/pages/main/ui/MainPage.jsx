@@ -7,6 +7,9 @@ import styles from './MainPage.module.scss';
 import { useServerRequest } from '@/shared/hooks';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const availabilityOptions = [
 	{ value: 'false', label: 'Занято' },
@@ -22,7 +25,6 @@ const roomTypeOptions = [
 export const MainPage = () => {
 	const [rooms, setRooms] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [fetching, setFetching] = useState(true);
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [adultCount, setAdultCount] = useState(1);
@@ -47,22 +49,63 @@ export const MainPage = () => {
 		setIsOpen(!isOpen);
 	};
 
+	const searchRoomSchema = yup.object().shape({
+		dateRange: yup
+			.array()
+			.of(yup.date().required('Укажите дату'))
+			.min(2, 'Укажите диапазон дат')
+			.max(2, 'Укажите только начало и конец диапазона'),
+		availability: yup
+			.string()
+			.required('Выберите доступность')
+			.oneOf(['available', 'unavailable'], 'Некорректное значение доступности'),
+		roomType: yup
+			.string()
+			.required('Выберите тип комнаты')
+			.oneOf(['standard', 'deluxe', 'suite'], 'Некорректное значение типа комнаты'),
+		guests: yup.object().shape({
+			adults: yup
+				.number()
+				.required('Укажите количество взрослых')
+				.min(1, 'Минимум 1 взрослый')
+				.max(10, 'Максимум 10 взрослых'),
+			children: yup
+				.number()
+				.min(0, 'Количество детей не может быть отрицательным')
+				.max(10, 'Максимум 10 детей'),
+		}),
+	});
+
+	const {
+		register,
+		reset,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		defaultValues: {
+			dateRange: [],
+			availability: 'available',
+			roomType: 'стандарт',
+			guests: {
+				adults: 1,
+				children: 0,
+			},
+		},
+		resolver: yupResolver(searchRoomSchema),
+	});
+
 	const dispatch = useDispatch();
 	const requestServer = useServerRequest();
 
-	console.log(currentPage);
+	const onSearch = () => {};
 
 	useEffect(() => {
-		if (fetching) {
-			requestServer('fetchRooms', PAGINATION_LIMIT, currentPage)
-				.then((roomsData) => {
-					setRooms([...rooms, ...roomsData.res]);
-				})
-				.finally(() => setFetching(false));
-		}
+		requestServer('fetchRooms', PAGINATION_LIMIT, currentPage).then((roomsData) => {
+			setRooms([...rooms, ...roomsData.res]);
+		});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dispatch, requestServer, currentPage, fetching]);
+	}, [dispatch, requestServer, currentPage]);
 
 	return (
 		<div className={styles.main__box}>
@@ -92,23 +135,26 @@ export const MainPage = () => {
 				</Button>
 			</div>
 			<div className={styles.main__right}>
-				<form className={styles.form}>
-					<DateRange />
+				<form className={styles.form} onSubmit={handleSubmit(onSearch)}>
+					<DateRange {...register('dateRange')} />
 					<Select
 						options={availabilityOptions}
 						defaultValue={availabilityOptions[1]}
 						classNamePrefix="form-select"
+						{...register('availability')}
 					/>
 					<Select
 						options={roomTypeOptions}
 						defaultValue={roomTypeOptions[1]}
 						classNamePrefix="form-select"
+						{...register('roomType')}
 					/>
 					<div>
 						<button
 							className={styles.dropdown}
 							type="button"
 							onClick={handleGuestChanging}
+							{...register('guests')}
 						>
 							1 гость
 						</button>
@@ -164,7 +210,7 @@ export const MainPage = () => {
 										/*
 											TODO onClick записать кол-во взр
 											если есть дети то добавить кол-во детей,
-											пример: 1 взролый - 2 детей
+											пример: 1 взрослый - 2 детей
 											*/
 									>
 										Применить
@@ -174,6 +220,7 @@ export const MainPage = () => {
 						)}
 					</div>
 					<Button>Найти подходящий номер</Button>
+					{errors && <div>{errors[0]}</div>}
 				</form>
 			</div>
 		</div>
