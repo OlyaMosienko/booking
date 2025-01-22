@@ -1,20 +1,19 @@
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { ru } from 'date-fns/locale/ru';
 import './DateRange.scss';
 
 registerLocale('ru', ru);
 
-export const DateRange = () => {
-	const [startDate, setStartDate] = useState(null);
-	const [endDate, setEndDate] = useState(null);
+export const DateRange = forwardRef(({ value = [], onChange }, ref) => {
+	const [startDate, setStartDate] = useState(value[0] || null);
+	const [endDate, setEndDate] = useState(value[1] || null);
 
-	const onChange = (dates) => {
+	const handleChange = (dates) => {
 		const [start, end] = dates;
 		setStartDate(start);
 		setEndDate(end);
-		console.log('start:', new Date(start).toLocaleDateString());
-		console.log('end:', new Date(end).toLocaleDateString());
+		onChange(dates);
 	};
 
 	return (
@@ -22,13 +21,16 @@ export const DateRange = () => {
 			<DatePicker
 				startDate={startDate}
 				endDate={endDate}
-				onChange={onChange}
+				onChange={handleChange}
 				dateFormat="dd MMMM"
 				selectsRange={true}
 				isClearable={true}
 				placeholderText="Даты поездки"
 				locale="ru"
+				ref={ref}
 			/>
 		</div>
 	);
-};
+});
+
+DateRange.displayName = 'DateRange';

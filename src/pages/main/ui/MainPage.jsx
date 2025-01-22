@@ -7,13 +7,13 @@ import styles from './MainPage.module.scss';
 import { useServerRequest } from '@/shared/hooks';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const availabilityOptions = [
-	{ value: 'false', label: 'Занято' },
-	{ value: 'true', label: 'Свободно' },
+	{ value: 'unavailable', label: 'Занято' },
+	{ value: 'available', label: 'Свободно' },
 ];
 const roomTypeOptions = [
 	{ value: 'эконом', label: 'Эконом' },
@@ -25,25 +25,9 @@ const roomTypeOptions = [
 export const MainPage = () => {
 	const [rooms, setRooms] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
-
 	const [isOpen, setIsOpen] = useState(false);
-	const [adultCount, setAdultCount] = useState(1);
-	const [childCount, setChildCount] = useState(0);
 
 	const PAGINATION_LIMIT = 4;
-
-	const incrementAdult = () => {
-		setAdultCount(adultCount + 1);
-	};
-	const incrementChild = () => {
-		setChildCount(childCount + 1);
-	};
-	const decrementAdult = () => {
-		setAdultCount(adultCount - 1);
-	};
-	const decrementChild = () => {
-		setChildCount(childCount - 1);
-	};
 
 	const handleGuestChanging = () => {
 		setIsOpen(!isOpen);
@@ -62,7 +46,10 @@ export const MainPage = () => {
 		roomType: yup
 			.string()
 			.required('Выберите тип комнаты')
-			.oneOf(['standard', 'deluxe', 'suite'], 'Некорректное значение типа комнаты'),
+			.oneOf(
+				['эконом', 'стандарт', 'люкс', 'министерский люкс'],
+				'Некорректное значение типа комнаты',
+			),
 		guests: yup.object().shape({
 			adults: yup
 				.number()
@@ -77,7 +64,7 @@ export const MainPage = () => {
 	});
 
 	const {
-		register,
+		control,
 		reset,
 		handleSubmit,
 		formState: { errors },
@@ -97,7 +84,10 @@ export const MainPage = () => {
 	const dispatch = useDispatch();
 	const requestServer = useServerRequest();
 
-	const onSearch = () => {};
+	const onSearch = (data) => {
+		console.log(data);
+		reset();
+	};
 
 	useEffect(() => {
 		requestServer('fetchRooms', PAGINATION_LIMIT, currentPage).then((roomsData) => {
@@ -136,91 +126,156 @@ export const MainPage = () => {
 			</div>
 			<div className={styles.main__right}>
 				<form className={styles.form} onSubmit={handleSubmit(onSearch)}>
-					<DateRange {...register('dateRange')} />
-					<Select
-						options={availabilityOptions}
-						defaultValue={availabilityOptions[1]}
-						classNamePrefix="form-select"
-						{...register('availability')}
+					<Controller
+						name="dateRange"
+						control={control}
+						render={({ field }) => <DateRange {...field} />}
 					/>
-					<Select
-						options={roomTypeOptions}
-						defaultValue={roomTypeOptions[1]}
-						classNamePrefix="form-select"
-						{...register('roomType')}
-					/>
-					<div>
-						<button
-							className={styles.dropdown}
-							type="button"
-							onClick={handleGuestChanging}
-							{...register('guests')}
-						>
-							1 гость
-						</button>
-						{isOpen && (
-							<div className={styles.dropdown__inner}>
-								<div className={styles.dropdown__row}>
-									<div>
-										Взрослые
-										<span>от 18 лет</span>
-									</div>
-									<div className={styles.dropdown__counter}>
-										<button
-											type="button"
-											onClick={decrementAdult}
-											disabled={adultCount <= 1}
-										>
-											-
-										</button>
-										{adultCount}
-										<button type="button" onClick={incrementAdult}>
-											+
-										</button>
-									</div>
-								</div>
-								<div className={styles.dropdown__row}>
-									<div>
-										Дети
-										<span>до 18 лет</span>
-									</div>
-									<div className={styles.dropdown__counter}>
-										<button
-											type="button"
-											onClick={decrementChild}
-											disabled={childCount < 1}
-										>
-											-
-										</button>
-										{childCount}
-										<button type="button" onClick={incrementChild}>
-											+
-										</button>
-									</div>
-								</div>
-								<div className={styles.dropdown__btns}>
-									<Button
-										type="button"
-										// TODO сбросить до 1 взрослый и 0 детей
-									>
-										Сбросить
-									</Button>
-									<Button
-										type="button"
-										/*
-											TODO onClick записать кол-во взр
-											если есть дети то добавить кол-во детей,
-											пример: 1 взрослый - 2 детей
-											*/
-									>
-										Применить
-									</Button>
-								</div>
-							</div>
+					<Controller
+						name="availability"
+						control={control}
+						render={({ field }) => (
+							<Select
+								{...field}
+								options={availabilityOptions}
+								defaultValue={availabilityOptions[1]}
+								classNamePrefix="form-select"
+								value={availabilityOptions.find(
+									(option) => option.value === field.value,
+								)}
+								onChange={(selected) => field.onChange(selected.value)}
+							/>
 						)}
-					</div>
-					<Button>Найти подходящий номер</Button>
-					{errors && <div>{errors[0]}</div>}
+					/>
+					<Controller
+						name="roomType"
+						control={control}
+						render={({ field }) => (
+							<Select
+								{...field}
+								options={roomTypeOptions}
+								defaultValue={roomTypeOptions[1]}
+								classNamePrefix="form-select"
+								value={roomTypeOptions.find(
+									(option) => option.value === field.value,
+								)}
+								onChange={(selected) => field.onChange(selected.value)}
+							/>
+						)}
+					/>
+					<Controller
+						name="guests"
+						control={control}
+						defaultValue={{ adults: 1, children: 0 }}
+						render={({ field }) => {
+							const { value = { adults: 1, children: 0 }, onChange } =
+								field;
+
+							return (
+								<div>
+									<button
+										className={styles.dropdown}
+										type="button"
+										onClick={handleGuestChanging}
+									>
+										{value.adults} взрослых - {value.children} детей
+									</button>
+									{isOpen && (
+										<div className={styles.dropdown__inner}>
+											<div className={styles.dropdown__row}>
+												<div>Взрослые (от 18 лет)</div>
+												<div className={styles.dropdown__counter}>
+													<button
+														type="button"
+														onClick={() =>
+															onChange({
+																...value,
+																adults: Math.max(
+																	1,
+																	value.adults - 1,
+																),
+															})
+														}
+														disabled={value.adults <= 1}
+													>
+														-
+													</button>
+													{value.adults}
+													<button
+														type="button"
+														onClick={() =>
+															onChange({
+																...value,
+																adults: value.adults + 1,
+															})
+														}
+													>
+														+
+													</button>
+												</div>
+											</div>
+											<div className={styles.dropdown__row}>
+												<div>Дети (до 18 лет)</div>
+												<div className={styles.dropdown__counter}>
+													<button
+														type="button"
+														onClick={() =>
+															onChange({
+																...value,
+																children: Math.max(
+																	0,
+																	value.children - 1,
+																),
+															})
+														}
+														disabled={value.children <= 0}
+													>
+														-
+													</button>
+													{value.children}
+													<button
+														type="button"
+														onClick={() =>
+															onChange({
+																...value,
+																children:
+																	value.children + 1,
+															})
+														}
+													>
+														+
+													</button>
+												</div>
+											</div>
+											<div className={styles.dropdown__btns}>
+												<Button
+													type="button"
+													onClick={() =>
+														onChange({
+															adults: 1,
+															children: 0,
+														})
+													}
+												>
+													Сбросить
+												</Button>
+												<Button
+													type="button"
+													onClick={() =>
+														handleGuestChanging(false)
+													}
+												>
+													Применить
+												</Button>
+											</div>
+										</div>
+									)}
+								</div>
+							);
+						}}
+					/>
+					<Button type="submit">Найти подходящий номер</Button>
+					{errors ? errors[0] : null}
 				</form>
 			</div>
 		</div>
