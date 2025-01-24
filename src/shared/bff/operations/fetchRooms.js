@@ -5,8 +5,6 @@ export const fetchRooms = async (limit, page) => {
 	let rooms;
 	let error;
 
-	console.log('limit:', limit, 'page:', page);
-
 	try {
 		rooms = await getRooms(limit, page);
 	} catch (roomError) {

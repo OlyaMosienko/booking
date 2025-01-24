@@ -56,8 +56,8 @@ export const Favorites = () => {
 	return (
 		<div>
 			<Title>Избранные номера</Title>
-			<div className={styles.favorites}>
-				{favoriteRooms.map(({ id, imageUrl, title }) => (
+			<section className={styles.favorites}>
+				{favoriteRooms?.map(({ id, imageUrl, title }) => (
 					<div key={id}>
 						<Link to={`/room/${id}`}>
 							<div>
@@ -70,7 +70,9 @@ export const Favorites = () => {
 						</button>
 					</div>
 				))}
-			</div>
+			</section>
+			{!favoriteRooms &&
+				'Пока нет избранных номеров, но мы надеемся, ты найдешь их здесь!'}
 		</div>
 	);
 };

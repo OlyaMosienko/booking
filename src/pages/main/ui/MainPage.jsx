@@ -16,10 +16,10 @@ const availabilityOptions = [
 	{ value: 'available', label: 'Свободно' },
 ];
 const roomTypeOptions = [
-	{ value: 'эконом', label: 'Эконом' },
-	{ value: 'стандарт', label: 'Стандарт' },
-	{ value: 'люкс', label: 'Люкс' },
-	{ value: 'министерский люкс', label: 'Министерский Люкс' },
+	{ value: 'econom', label: 'Эконом' },
+	{ value: 'standard', label: 'Стандарт' },
+	{ value: 'lux', label: 'Люкс' },
+	{ value: 'extra-lux', label: 'Министерский Люкс' },
 ];
 
 export const MainPage = () => {
@@ -47,7 +47,7 @@ export const MainPage = () => {
 			.string()
 			.required('Выберите тип комнаты')
 			.oneOf(
-				['эконом', 'стандарт', 'люкс', 'министерский люкс'],
+				['econom', 'standard', 'lux', 'extra-lux'],
 				'Некорректное значение типа комнаты',
 			),
 		guests: yup.object().shape({
@@ -65,14 +65,13 @@ export const MainPage = () => {
 
 	const {
 		control,
-		reset,
 		handleSubmit,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
 			dateRange: [],
 			availability: 'available',
-			roomType: 'стандарт',
+			roomType: 'standard',
 			guests: {
 				adults: 1,
 				children: 0,
@@ -86,7 +85,7 @@ export const MainPage = () => {
 
 	const onSearch = (data) => {
 		console.log(data);
-		reset();
+		// reset();
 	};
 
 	useEffect(() => {
@@ -96,6 +95,14 @@ export const MainPage = () => {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch, requestServer, currentPage]);
+
+	const formError =
+		errors?.dateRange?.map((date) => date.message) ||
+		errors?.availability?.message ||
+		errors?.roomType?.message ||
+		errors?.guests?.message ||
+		errors?.guests?.adults?.message ||
+		errors?.guests?.children?.message;
 
 	return (
 		<div className={styles.main__box}>
@@ -110,7 +117,7 @@ export const MainPage = () => {
 				</section>
 				<section className={styles.main__rooms}>
 					{rooms.map(({ id, imageUrl, title }) => (
-						<div key={id}>
+						<div key={id + title}>
 							<Link to={`/room/${id}`}>
 								<div>
 									<img src={imageUrl} />
@@ -275,7 +282,7 @@ export const MainPage = () => {
 						}}
 					/>
 					<Button type="submit">Найти подходящий номер</Button>
-					{errors ? errors[0] : null}
+					{formError ? formError : null}
 				</form>
 			</div>
 		</div>
