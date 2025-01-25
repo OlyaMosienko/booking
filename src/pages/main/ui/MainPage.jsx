@@ -10,11 +10,8 @@ import { Link } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { PriceRange } from '@/shared/ui/PriceRange/PriceRange';
 
-const availabilityOptions = [
-	{ value: 'unavailable', label: 'Занято' },
-	{ value: 'available', label: 'Свободно' },
-];
 const roomTypeOptions = [
 	{ value: 'econom', label: 'Эконом' },
 	{ value: 'standard', label: 'Стандарт' },
@@ -39,10 +36,6 @@ export const MainPage = () => {
 			.of(yup.date().required('Укажите дату'))
 			.min(2, 'Укажите диапазон дат')
 			.max(2, 'Укажите только начало и конец диапазона'),
-		availability: yup
-			.string()
-			.required('Выберите доступность')
-			.oneOf(['available', 'unavailable'], 'Некорректное значение доступности'),
 		roomType: yup
 			.string()
 			.required('Выберите тип комнаты')
@@ -61,6 +54,11 @@ export const MainPage = () => {
 				.min(0, 'Количество детей не может быть отрицательным')
 				.max(10, 'Максимум 10 детей'),
 		}),
+		priceRange: yup
+			.number()
+			.required('Укажите максимальную цену')
+			.min(0, 'Цена не может быть отрицательной')
+			.max(1000, 'Цена не может превышать 1000'),
 	});
 
 	const {
@@ -70,12 +68,12 @@ export const MainPage = () => {
 	} = useForm({
 		defaultValues: {
 			dateRange: [],
-			availability: 'available',
 			roomType: 'standard',
 			guests: {
 				adults: 1,
 				children: 0,
 			},
+			priceRange: 1000,
 		},
 		resolver: yupResolver(searchRoomSchema),
 	});
@@ -98,11 +96,11 @@ export const MainPage = () => {
 
 	const formError =
 		errors?.dateRange?.map((date) => date.message) ||
-		errors?.availability?.message ||
 		errors?.roomType?.message ||
 		errors?.guests?.message ||
 		errors?.guests?.adults?.message ||
-		errors?.guests?.children?.message;
+		errors?.guests?.children?.message ||
+		errors?.priceRange?.message;
 
 	return (
 		<div className={styles.main__box}>
@@ -137,22 +135,6 @@ export const MainPage = () => {
 						name="dateRange"
 						control={control}
 						render={({ field }) => <DateRange {...field} />}
-					/>
-					<Controller
-						name="availability"
-						control={control}
-						render={({ field }) => (
-							<Select
-								{...field}
-								options={availabilityOptions}
-								defaultValue={availabilityOptions[1]}
-								classNamePrefix="form-select"
-								value={availabilityOptions.find(
-									(option) => option.value === field.value,
-								)}
-								onChange={(selected) => field.onChange(selected.value)}
-							/>
-						)}
 					/>
 					<Controller
 						name="roomType"
@@ -190,7 +172,7 @@ export const MainPage = () => {
 									{isOpen && (
 										<div className={styles.dropdown__inner}>
 											<div className={styles.dropdown__row}>
-												<div>Взрослые (от 18 лет)</div>
+												<div>Взрослые</div>
 												<div className={styles.dropdown__counter}>
 													<button
 														type="button"
@@ -222,7 +204,7 @@ export const MainPage = () => {
 												</div>
 											</div>
 											<div className={styles.dropdown__row}>
-												<div>Дети (до 18 лет)</div>
+												<div>Дети</div>
 												<div className={styles.dropdown__counter}>
 													<button
 														type="button"
@@ -280,6 +262,17 @@ export const MainPage = () => {
 								</div>
 							);
 						}}
+					/>
+					<Controller
+						name="priceRange"
+						control={control}
+						defaultValue={[1000, 1000]}
+						render={({ field }) => (
+							<PriceRange
+								value={field.value}
+								onChange={(values) => field.onChange(values)}
+							/>
+						)}
 					/>
 					<Button type="submit">Найти подходящий номер</Button>
 					{formError ? formError : null}

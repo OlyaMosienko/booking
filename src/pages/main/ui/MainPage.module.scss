@@ -79,7 +79,7 @@
 	padding: 12px 0 12px 18px;
 	width: 100%;
 	text-align: left;
-	transition: .2s;
+	transition: 0.2s;
 	position: relative;
 
 	&__inner {
@@ -93,6 +93,7 @@
 		border-radius: 8px;
 		margin-top: 8px;
 		padding: 12px 18px;
+		z-index: 10;
 	}
 	&__row {
 		display: flex;
@@ -143,7 +144,8 @@
 		box-shadow: none !important;
 		transition: 0.3s;
 
-		&:hover, &--menu-is-open {
+		&:hover,
+		&--menu-is-open {
 			box-shadow: 0 0 3px 0 var(--primary-color) !important;
 		}
 	}
@@ -173,7 +175,8 @@
 	}
 	&__option {
 		padding: 12px 0 12px 18px !important;
-		&--is-focused, &--is-selected {
+		&--is-focused,
+		&--is-selected {
 			color: var(--secondary-color) !important;
 			background-color: var(--tag-bg) !important;
 		}
