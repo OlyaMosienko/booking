@@ -2,23 +2,10 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Title } from '@/shared/ui/Title/Title';
 import { Button } from '@/shared/ui/Button/Button';
-// import { useModal } from '@/app/providers/ModalProvider/lib/useModal';
 import { addReviewsAsync, removeReviewsAsync } from '@/entities/room/model/actions';
 import { selectUserId } from '@/entities/user/model/selectors';
 import { useServerRequest } from '@/shared/hooks';
 import styles from './Reviews.module.scss';
-
-// const ReviewModal = ({ newReview, setNewReview, roomId, onNewReviewAdd }) => (
-// 	<div>
-// 		<textarea
-// 			name="review"
-// 			value={newReview}
-// 			onChange={({ target }) => setNewReview(target.value)}
-// 			placeholder="Оставьте свой отзыв"
-// 		></textarea>
-// 		<Button onClick={() => onNewReviewAdd(roomId, newReview)}>Отправить</Button>
-// 	</div>
-// );
 
 export const Reviews = ({ roomId, reviews }) => {
 	const [newReview, setNewReview] = useState('');
@@ -34,8 +21,6 @@ export const Reviews = ({ roomId, reviews }) => {
 
 	const onReviewRemove = (id) =>
 		dispatch(removeReviewsAsync(requestServer, roomId, id));
-
-	// const { openModal } = useModal();
 
 	return (
 		<div className={styles.reviews}>

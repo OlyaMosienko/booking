@@ -5,12 +5,14 @@ import { Title } from '@/shared/ui/Title/Title';
 import { DateRange } from '@/shared/ui/DateRange/DateRange';
 import styles from './MainPage.module.scss';
 import { useServerRequest } from '@/shared/hooks';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PriceRange } from '@/shared/ui/PriceRange/PriceRange';
+import { selectSearchParams } from '@/entities/search/model/selectors';
+import { setSearchParams } from '@/entities/search/model/actions/setSearchParams';
 
 const roomTypeOptions = [
 	{ value: 'econom', label: 'Эконом' },
@@ -29,6 +31,8 @@ export const MainPage = () => {
 	const handleGuestChanging = () => {
 		setIsOpen(!isOpen);
 	};
+
+	const searchParams = useSelector(selectSearchParams);
 
 	const searchRoomSchema = yup.object().shape({
 		dateRange: yup
@@ -66,15 +70,7 @@ export const MainPage = () => {
 		handleSubmit,
 		formState: { errors },
 	} = useForm({
-		defaultValues: {
-			dateRange: [],
-			roomType: 'standard',
-			guests: {
-				adults: 1,
-				children: 0,
-			},
-			priceRange: 1000,
-		},
+		defaultValues: searchParams,
 		resolver: yupResolver(searchRoomSchema),
 	});
 
@@ -82,8 +78,7 @@ export const MainPage = () => {
 	const requestServer = useServerRequest();
 
 	const onSearch = (data) => {
-		console.log(data);
-		// reset();
+		dispatch(setSearchParams(data));
 	};
 
 	useEffect(() => {
@@ -92,7 +87,7 @@ export const MainPage = () => {
 		});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dispatch, requestServer, currentPage]);
+	}, [requestServer, currentPage]);
 
 	const formError =
 		errors?.dateRange?.map((date) => date.message) ||

@@ -15,6 +15,8 @@ import { selectUserId } from '@/entities/user/model/selectors';
 import { removeFavoriteAsync } from '@/entities/favorites/model/actions/removeFavoriteAsync';
 import { addFavoriteAsync } from '@/entities/favorites/model/actions/addFavoriteAsync';
 import { loadFavoritesAsync } from '@/entities/favorites/model/actions/loadFavoritesAsync';
+import { selectSearchParams } from '@/entities/search/model/selectors';
+import { addBookingAsync } from '@/entities/bookings/model/actions/addBookingAsync';
 
 export const RoomPage = () => {
 	const [error, setError] = useState(null);
@@ -25,6 +27,9 @@ export const RoomPage = () => {
 	const navigate = useNavigate();
 	const favorites = useSelector(selectFavorites);
 	const userId = useSelector(selectUserId);
+	const searchParams = useSelector(selectSearchParams);
+
+	const { dateRange, guests } = searchParams;
 
 	useEffect(() => {
 		dispatch(loadRoomAsync(requestServer, params.id)).then((roomData) => {
@@ -34,20 +39,11 @@ export const RoomPage = () => {
 		dispatch(loadFavoritesAsync(requestServer, userId));
 	}, [dispatch, params.id, requestServer, userId]);
 
-	const {
-		title,
-		image_url,
-		description,
-		type,
-		price,
-		availability,
-		amenities,
-		reviews,
-	} = room;
+	const { title, image_url, description, type, price, amenities, reviews } = room;
 
 	const isFavorite = favorites?.some((fav) => fav.roomId === params.id);
 
-	const { openModal } = useModal();
+	const { openModal, closeModal } = useModal();
 
 	const handleFavoriteToggle = () => {
 		if (isFavorite) {
@@ -57,6 +53,19 @@ export const RoomPage = () => {
 		} else {
 			dispatch(addFavoriteAsync(requestServer, userId, params.id));
 		}
+	};
+
+	const handleBookingClick = () => {
+		const bookingData = {
+			userId,
+			roomId: params.id,
+			checkInDate: dateRange[0],
+			checkOutDate: dateRange[1],
+			guests,
+		};
+
+		dispatch(addBookingAsync(requestServer, userId, bookingData));
+		closeModal();
 	};
 
 	return error ? (
@@ -93,9 +102,45 @@ export const RoomPage = () => {
 							{price} галлеон/сутки
 						</p>
 						<Button
-							disabled={!availability}
-							onClick={() => openModal(<div>Content tut</div>)}
-							// TODO onClick модалка для брони с данными из стора
+							onClick={() =>
+								openModal(
+									<div>
+										<p>Хотите забронировать этот номер?</p>
+										<p>
+											Дата:
+											{`${dateRange[0].toLocaleDateString()} - ${dateRange[1].toLocaleDateString()}`}
+										</p>
+										<p>
+											Количество гостей:
+											{`${guests.adults} взрослых - ${guests.children} детей`}
+										</p>
+										<p>Стоимость за сутки: {price}</p>
+										<p>
+											Итого:{' '}
+											{(() => {
+												const daysCount =
+													(dateRange[1] - dateRange[0]) /
+													(1000 * 60 * 60 * 24);
+												const totalCost =
+													daysCount *
+													price *
+													(guests.adults +
+														guests.children * 0.5);
+												return totalCost.toFixed(2);
+											})()}
+										</p>
+										<Button onClick={handleBookingClick}>Да</Button>
+										<Button
+											onClick={() => {
+												closeModal();
+												navigate('/');
+											}}
+										>
+											Посмотрю еще
+										</Button>
+									</div>,
+								)
+							}
 						>
 							Забронировать!
 						</Button>

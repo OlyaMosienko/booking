@@ -17,9 +17,6 @@ export const Favorites = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	console.log(userId);
-	console.log('favoriteRooms', favoriteRooms);
-
 	useEffect(() => {
 		if (!userId) return;
 

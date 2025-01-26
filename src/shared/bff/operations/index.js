@@ -9,3 +9,4 @@ export * from './removeFavoriteRoom';
 export * from './getFavoriteRooms';
 export * from './getFavoriteRoomsDetails';
 export * from './fetchRooms';
+export * from './addNewBooking';

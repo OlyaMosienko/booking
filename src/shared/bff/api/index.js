@@ -13,3 +13,5 @@ export * from './getFavorites';
 export * from './deleteFavorite';
 export * from './addFavorite';
 export * from './getRooms';
+export * from './addBooking';
+export * from './getBookings';

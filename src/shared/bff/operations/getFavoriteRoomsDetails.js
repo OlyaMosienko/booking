@@ -18,7 +18,6 @@ export const getFavoriteRoomsDetails = async (hash, userId) => {
 	const roomIds = favorites.map((fav) => `id=${fav.roomId}`).join('&');
 	const response = await fetch(`http://localhost:3005/rooms?${roomIds}`);
 	const rooms = await response.json();
-	console.log(rooms);
 
 	return {
 		error: null,
