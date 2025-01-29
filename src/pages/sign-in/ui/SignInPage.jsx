@@ -32,7 +32,7 @@ const signInSchema = yup.object().shape({
 		.max(20, 'Неверно заполнен пароль. Максимум 20 символов'),
 });
 
-export const SignInPage = () => {
+const SignInPage = () => {
 	const {
 		register,
 		reset,
@@ -107,3 +107,5 @@ export const SignInPage = () => {
 		</div>
 	);
 };
+
+export default SignInPage;

@@ -1,0 +1,35 @@
+.loader {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 200;
+	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(10px);
+	cursor: pointer;
+	overflow-y: auto;
+	overflow-x: hidden;
+	text-align: center;
+	opacity: 1;
+	visibility: visible;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	perspective: 9000px;
+	&__svg {
+		height: 100px;
+		transform-style: preserve-3d;
+		animation: rotate 1.5s infinite;
+	}
+}
+
+@keyframes rotate {
+	from {
+		transform: rotateY(0);
+	}
+	to {
+		transform: rotateY(360deg);
+	}
+}

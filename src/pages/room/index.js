@@ -1,1 +1,3 @@
-export * from './ui/RoomPage';
+import { RoomPageAsync } from './ui/RoomPageAsync';
+
+export { RoomPageAsync as RoomPage };

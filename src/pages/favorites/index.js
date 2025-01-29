@@ -1,1 +1,3 @@
-export * from './ui/Favorites';
+import { FavoritesAsync } from './ui/FavoritesAsync';
+
+export { FavoritesAsync as Favorites };

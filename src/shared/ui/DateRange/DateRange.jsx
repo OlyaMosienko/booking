@@ -21,6 +21,7 @@ export const DateRange = forwardRef(({ value = [], onChange }, ref) => {
 			<DatePicker
 				startDate={startDate}
 				endDate={endDate}
+				minDate={new Date()}
 				onChange={handleChange}
 				dateFormat="dd MMMM"
 				selectsRange={true}

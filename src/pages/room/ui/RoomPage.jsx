@@ -17,8 +17,9 @@ import { addFavoriteAsync } from '@/entities/favorites/model/actions/addFavorite
 import { loadFavoritesAsync } from '@/entities/favorites/model/actions/loadFavoritesAsync';
 import { selectSearchParams } from '@/entities/search/model/selectors';
 import { addBookingAsync } from '@/entities/bookings/model/actions/addBookingAsync';
+import { DEFAULT_BOOKING_PARAMS } from '@/shared/lib';
 
-export const RoomPage = () => {
+const RoomPage = () => {
 	const [error, setError] = useState(null);
 	const dispatch = useDispatch();
 	const requestServer = useServerRequest();
@@ -55,15 +56,15 @@ export const RoomPage = () => {
 		}
 	};
 
-	const handleBookingClick = () => {
-		const bookingData = {
-			userId,
-			roomId: params.id,
-			checkInDate: dateRange[0],
-			checkOutDate: dateRange[1],
-			guests,
-		};
+	const bookingData = {
+		userId,
+		roomId: params.id,
+		checkInDate: dateRange[0] || DEFAULT_BOOKING_PARAMS.CHECK_IN_DATE,
+		checkOutDate: dateRange[1] || DEFAULT_BOOKING_PARAMS.CHECK_OUT_DATE,
+		guests: guests || DEFAULT_BOOKING_PARAMS.GUESTS,
+	};
 
+	const handleBookingClick = () => {
 		dispatch(addBookingAsync(requestServer, userId, bookingData));
 		closeModal();
 	};
@@ -108,24 +109,26 @@ export const RoomPage = () => {
 										<p>Хотите забронировать этот номер?</p>
 										<p>
 											Дата:
-											{`${dateRange[0].toLocaleDateString()} - ${dateRange[1].toLocaleDateString()}`}
+											{`${bookingData.checkInDate.toLocaleDateString()} - ${bookingData.checkOutDate.toLocaleDateString()}`}
 										</p>
 										<p>
 											Количество гостей:
-											{`${guests.adults} взрослых - ${guests.children} детей`}
+											{`${bookingData.guests.adults} взрослых - ${bookingData.guests.children} детей`}
 										</p>
 										<p>Стоимость за сутки: {price}</p>
 										<p>
 											Итого:{' '}
 											{(() => {
 												const daysCount =
-													(dateRange[1] - dateRange[0]) /
+													(bookingData.checkOutDate -
+														bookingData.checkInDate) /
 													(1000 * 60 * 60 * 24);
 												const totalCost =
 													daysCount *
 													price *
-													(guests.adults +
-														guests.children * 0.5);
+													(bookingData.guests.adults +
+														bookingData.guests.children *
+															0.5);
 												return totalCost.toFixed(2);
 											})()}
 										</p>
@@ -151,3 +154,5 @@ export const RoomPage = () => {
 		</>
 	);
 };
+
+export default RoomPage;

@@ -21,7 +21,7 @@ const roomTypeOptions = [
 	{ value: 'extra-lux', label: 'Министерский Люкс' },
 ];
 
-export const MainPage = () => {
+const MainPage = () => {
 	const [rooms, setRooms] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [isOpen, setIsOpen] = useState(false);
@@ -162,7 +162,7 @@ export const MainPage = () => {
 										type="button"
 										onClick={handleGuestChanging}
 									>
-										{value.adults} взрослых - {value.children} детей
+										{value.adults} взрослых — {value.children} детей
 									</button>
 									{isOpen && (
 										<div className={styles.dropdown__inner}>
@@ -276,3 +276,5 @@ export const MainPage = () => {
 		</div>
 	);
 };
+
+export default MainPage;

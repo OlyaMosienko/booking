@@ -1,2 +1,4 @@
-export * from './ui/RegisterPage';
-export * from './ui/SignInPage';
+import { RegisterPageAsync } from './ui/RegisterPageAsync';
+import { SingInPageAsync } from './ui/SignInPageAsync';
+
+export { RegisterPageAsync as RegisterPage, SingInPageAsync as SignInPage };

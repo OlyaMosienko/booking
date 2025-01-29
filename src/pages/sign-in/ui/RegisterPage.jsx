@@ -36,7 +36,7 @@ const regFormSchema = yup.object().shape({
 		.oneOf([yup.ref('password'), null], 'Пароль не совпадает'),
 });
 
-export const RegisterPage = () => {
+const RegisterPage = () => {
 	const {
 		register,
 		reset,
@@ -116,3 +116,5 @@ export const RegisterPage = () => {
 		</div>
 	);
 };
+
+export default RegisterPage;

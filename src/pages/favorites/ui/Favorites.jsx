@@ -8,7 +8,7 @@ import styles from './Favorites.module.scss';
 import { Title } from '@/shared/ui/Title/Title';
 import { removeFavoriteAsync } from '@/entities/favorites/model/actions/removeFavoriteAsync';
 
-export const Favorites = () => {
+const Favorites = () => {
 	const dispatch = useDispatch();
 	const requestServer = useServerRequest();
 	const userId = useSelector(selectUserId);
@@ -73,3 +73,5 @@ export const Favorites = () => {
 		</div>
 	);
 };
+
+export default Favorites;
