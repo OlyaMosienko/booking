@@ -18,6 +18,7 @@ import { loadFavoritesAsync } from '@/entities/favorites/model/actions/loadFavor
 import { selectSearchParams } from '@/entities/search/model/selectors';
 import { addBookingAsync } from '@/entities/bookings/model/actions/addBookingAsync';
 import { DEFAULT_BOOKING_PARAMS } from '@/shared/lib';
+import { useToast } from '@/app/providers/ToastProvider/lib/useToast';
 
 const RoomPage = () => {
 	const [error, setError] = useState(null);
@@ -29,6 +30,7 @@ const RoomPage = () => {
 	const favorites = useSelector(selectFavorites);
 	const userId = useSelector(selectUserId);
 	const searchParams = useSelector(selectSearchParams);
+	const { showToast } = useToast();
 
 	const { dateRange, guests } = searchParams;
 
@@ -67,6 +69,7 @@ const RoomPage = () => {
 	const handleBookingClick = () => {
 		dispatch(addBookingAsync(requestServer, userId, bookingData));
 		closeModal();
+		showToast({ message: 'Номер успешно забронирован!', type: 'success' });
 	};
 
 	return error ? (

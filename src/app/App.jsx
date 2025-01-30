@@ -7,6 +7,7 @@ import './styles/index.scss';
 import { useDispatch } from 'react-redux';
 import { useLayoutEffect } from 'react';
 import { setUser } from '@/entities/user/model/actions';
+import { Toast } from '@/shared/ui/Toast/Toast';
 
 export const App = () => {
 	const { theme, toggleTheme } = useTheme();
@@ -36,6 +37,7 @@ export const App = () => {
 			</main>
 			<button onClick={toggleTheme}>{theme === 'dark' ? 'Люмос!' : 'Нокс!'}</button>
 			<Modal />
+			<Toast />
 			<Footer />
 		</div>
 	);

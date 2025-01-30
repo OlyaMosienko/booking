@@ -7,6 +7,7 @@ import { selectUserId, selectUserLogin } from '@/entities/user/model/selectors';
 import { useServerRequest } from '@/shared/hooks';
 import styles from './Reviews.module.scss';
 import { useModal } from '@/app/providers/ModalProvider/lib/useModal';
+import { useToast } from '@/app/providers/ToastProvider/lib/useToast';
 
 export const Reviews = ({ roomId, reviews }) => {
 	const [newReview, setNewReview] = useState('');
@@ -15,6 +16,7 @@ export const Reviews = ({ roomId, reviews }) => {
 	// const userRole = useSelector(selectUserRole);
 	const dispatch = useDispatch();
 	const requestServer = useServerRequest();
+	const { showToast } = useToast();
 
 	const onNewReviewAdd = (userId, roomId, content) => {
 		dispatch(addReviewsAsync(requestServer, userId, roomId, content));
@@ -26,6 +28,7 @@ export const Reviews = ({ roomId, reviews }) => {
 	const onReviewRemove = (id) => {
 		dispatch(removeReviewsAsync(requestServer, roomId, id));
 		closeModal();
+		showToast({ message: 'Комментарий удалён!', type: 'success' });
 	};
 
 	return (

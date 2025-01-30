@@ -258,6 +258,20 @@
       "published_at": "27.01.2025",
       "content": "я напишу еще отзыв",
       "id": 7
+    },
+    {
+      "author_id": "001",
+      "room_id": "4",
+      "published_at": "30.01.2025",
+      "content": "3 отзыв",
+      "id": 10
+    },
+    {
+      "author_id": "001",
+      "room_id": "6",
+      "published_at": "30.01.2025",
+      "content": "отзыв",
+      "id": 11
     }
   ],
   "favorites": [
@@ -304,6 +318,50 @@
         "children": 1
       },
       "id": 3
+    },
+    {
+      "userId": "001",
+      "roomId": "4",
+      "checkInDate": "2025-01-30T21:00:00.000Z",
+      "checkOutDate": "2025-01-31T21:00:00.000Z",
+      "guests": {
+        "adults": 1,
+        "children": 0
+      },
+      "id": 4
+    },
+    {
+      "userId": "001",
+      "roomId": "4",
+      "checkInDate": "2025-01-30T21:00:00.000Z",
+      "checkOutDate": "2025-01-31T21:00:00.000Z",
+      "guests": {
+        "adults": 1,
+        "children": 0
+      },
+      "id": 5
+    },
+    {
+      "userId": "001",
+      "roomId": "6",
+      "checkInDate": "2025-01-30T21:00:00.000Z",
+      "checkOutDate": "2025-02-01T21:00:00.000Z",
+      "guests": {
+        "adults": 1,
+        "children": 3
+      },
+      "id": 6
+    },
+    {
+      "userId": "001",
+      "roomId": "6",
+      "checkInDate": "2025-01-30T21:00:00.000Z",
+      "checkOutDate": "2025-02-01T21:00:00.000Z",
+      "guests": {
+        "adults": 1,
+        "children": 3
+      },
+      "id": 7
     }
   ],
   "sessions": [
