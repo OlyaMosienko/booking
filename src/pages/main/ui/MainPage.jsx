@@ -1,21 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Button } from '@/shared/ui/Button/Button';
-import { Title } from '@/shared/ui/Title/Title';
-import { DateRange } from '@/shared/ui/DateRange/DateRange';
-import styles from './MainPage.module.scss';
-import { useServerRequest } from '@/shared/hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { PriceRange } from '@/shared/ui/PriceRange/PriceRange';
-import { Select } from '@/shared/ui/Select/Select';
+import { useServerRequest } from '@/shared/hooks';
 import { selectSearchParams } from '@/entities/search/model/selectors';
-import { setSearchParams } from '@/entities/search/model/actions/setSearchParams';
-import { Form } from '@/shared/ui/Form/Form';
-import { searchRoomSchema } from '../lib/searchRoomSchema';
-import { GuestsCounter } from '@/shared/ui/GuestsCounter/GuestsCounter';
-import { PAGINATION_LIMIT } from '@/shared/lib';
+import { setSearchParams } from '@/entities/search/model/actions';
 import { roomTypeOptions } from '@/entities/room/model/roomTypeOptions';
+import { PAGINATION_LIMIT } from '@/shared/lib';
+import {
+	Button,
+	DateRange,
+	Form,
+	GuestsCounter,
+	PriceRange,
+	Select,
+	Title,
+} from '@/shared/ui';
+import { searchRoomSchema } from '../lib/searchRoomSchema';
+import styles from './MainPage.module.scss';
 
 const MainPage = () => {
 	const [rooms, setRooms] = useState([]);
@@ -76,6 +78,8 @@ const MainPage = () => {
 						name="roomType"
 						options={roomTypeOptions}
 						defaultValue={roomTypeOptions[1]}
+						isMulti={true}
+						placeholder="Тип комнаты"
 					/>
 					<GuestsCounter name="guests" />
 					<PriceRange name="priceRange" />

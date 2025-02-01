@@ -19,6 +19,20 @@
 		line-height: 1.2;
 		margin: 0 !important;
 	}
+	&__multi-value {
+		background: var(--form-bg) !important;
+		color: inherit !important;
+		border-radius: 4px !important;
+		&__label {
+			color: inherit !important;
+		}
+		&__remove {
+			&:hover {
+				background-color: var(--primary-color) !important;
+				color: inherit !important;
+			}
+		}
+	}
 	&__input-container {
 		margin: 0 !important;
 		padding: 0 !important;

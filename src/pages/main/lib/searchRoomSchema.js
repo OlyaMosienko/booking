@@ -7,12 +7,18 @@ export const searchRoomSchema = yup.object().shape({
 		.min(2, 'Укажите диапазон дат')
 		.max(2, 'Укажите только начало и конец диапазона'),
 	roomType: yup
-		.string()
-		.required('Выберите тип комнаты')
-		.oneOf(
-			['econom', 'standard', 'lux', 'extra-lux'],
-			'Некорректное значение типа комнаты',
-		),
+		.array()
+		.of(
+			yup
+				.string()
+				.oneOf(
+					['econom', 'standard', 'lux', 'extra-lux'],
+					'Некорректное значение типа комнаты',
+				),
+		)
+		.min(1, 'Выберите хотя бы один тип комнаты')
+		.required('Выберите хотя бы один тип комнаты'),
+
 	guests: yup.object().shape({
 		adults: yup
 			.number()
