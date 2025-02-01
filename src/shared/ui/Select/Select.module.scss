@@ -1,0 +1,46 @@
+:global .form-select {
+	&__control {
+		background-color: var(--input-bg) !important;
+		border: none !important;
+		border-radius: 8px !important;
+		box-shadow: none !important;
+		transition: 0.3s;
+
+		&:hover,
+		&--menu-is-open {
+			box-shadow: 0 0 3px 0 var(--primary-color) !important;
+		}
+	}
+	&__value-container {
+		padding: 12px 0 12px 18px !important;
+	}
+	&__single-value {
+		color: var(--secondary-color) !important;
+		line-height: 1.2;
+		margin: 0 !important;
+	}
+	&__input-container {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	&__indicator-separator {
+		display: none;
+	}
+	&__menu {
+		border-radius: 8px !important;
+		background-color: var(--input-bg) !important;
+		box-shadow: none;
+	}
+	&__menu-list {
+		border-radius: 8px !important;
+		padding: 0 !important;
+	}
+	&__option {
+		padding: 12px 0 12px 18px !important;
+		&--is-focused,
+		&--is-selected {
+			color: var(--secondary-color) !important;
+			background-color: var(--tag-bg) !important;
+		}
+	}
+}

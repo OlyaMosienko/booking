@@ -33,9 +33,11 @@ export const App = () => {
 			<main className="content">
 				<div className="container flex">
 					<AppRouter />
+					<button className="theme-toggle-btn" onClick={toggleTheme}>
+						{theme === 'dark' ? 'Люмос!' : 'Нокс!'}
+					</button>
 				</div>
 			</main>
-			<button onClick={toggleTheme}>{theme === 'dark' ? 'Люмос!' : 'Нокс!'}</button>
 			<Modal />
 			<Toast />
 			<Footer />

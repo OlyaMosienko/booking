@@ -362,6 +362,17 @@
         "children": 3
       },
       "id": 7
+    },
+    {
+      "userId": "001",
+      "roomId": "2",
+      "checkInDate": "2025-02-01T08:51:24.905Z",
+      "checkOutDate": "2025-02-02T08:51:24.905Z",
+      "guests": {
+        "adults": 1,
+        "children": 0
+      },
+      "id": 8
     }
   ],
   "sessions": [
