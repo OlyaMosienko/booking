@@ -19,6 +19,7 @@ import { selectSearchParams } from '@/entities/search/model/selectors';
 import { addBookingAsync } from '@/entities/bookings/model/actions/addBookingAsync';
 import { DEFAULT_BOOKING_PARAMS } from '@/shared/lib';
 import { useToast } from '@/app/providers/ToastProvider/lib/useToast';
+import { getRoomTypeLabel } from '@/entities/room/lib';
 
 const RoomPage = () => {
 	const [error, setError] = useState(null);
@@ -91,7 +92,7 @@ const RoomPage = () => {
 						<Title>{title}</Title>
 						<p className={styles.room__description}>{description}</p>
 						<div className={styles.room__row}>
-							<p className={styles.room__type}>{type}</p>
+							<p className={styles.room__type}>{getRoomTypeLabel(type)}</p>
 							<p className={styles.room__reviews}>
 								{reviews?.length} отзывов
 							</p>

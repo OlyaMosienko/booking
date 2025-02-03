@@ -1,17 +1,14 @@
 .app.dark {
-	--bg-color: #11151E;
-    --primary-color: #FFA500;
-    --secondary-color: #FFFFFF;
+	--bg-color: #11151e;
+	--primary-color: #ffa500;
+	--secondary-color: #ffffff;
 
-	--border-color: #3A3A3A;
+	--border-color: #3a3a3a;
 
-	--tag-bg: #373B47;
+	--tag-bg: #373b47;
 
-	--form-bg: #22252D;
+	--form-bg: #22252d;
 	--input-bg: #454852;
-
-	position: relative;
-	z-index: 10;
 
 	&::before {
 		content: '';

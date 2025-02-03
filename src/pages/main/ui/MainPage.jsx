@@ -16,8 +16,10 @@ import {
 	Select,
 	Title,
 } from '@/shared/ui';
+import GalleonSVG from '@/shared/assets/galleon.svg?react';
 import { searchRoomSchema } from '../lib/searchRoomSchema';
 import styles from './MainPage.module.scss';
+import { getRoomTypeLabel } from '@/entities/room/lib';
 
 const MainPage = () => {
 	const [rooms, setRooms] = useState([]);
@@ -51,21 +53,65 @@ const MainPage = () => {
 						котле!
 					</p>
 				</section>
-				<section className={styles.main__rooms}>
-					{rooms.map(({ id, imageUrl, title }) => (
-						<div key={id + title}>
-							<Link to={`/room/${id}`}>
-								<div>
-									<img src={imageUrl} />
-								</div>
-							</Link>
-							<p>{title}</p>
-						</div>
-					))}
+				<section className={styles.rooms}>
+					<Title>Доступные номера</Title>
+					<div className={styles['rooms__list']}>
+						{rooms.map(
+							({
+								id,
+								imageUrl,
+								title,
+								description,
+								type,
+								price,
+								reviews,
+							}) => (
+								<Link
+									className={styles['rooms-item']}
+									key={id + title}
+									to={`/room/${id}`}
+								>
+									<div className={styles['rooms-item__thumb']}>
+										<img src={imageUrl} />
+										<span
+											className={
+												styles['rooms-item__thumb-showmore']
+											}
+										>
+											Узнать больше &#129106;
+										</span>
+									</div>
+									<div className={styles['rooms-item__about']}>
+										<div className={styles['rooms-item__head']}>
+											<p className={styles['rooms-item__type']}>
+												{getRoomTypeLabel(type)}
+											</p>
+											<p className={styles['rooms-item__reviews']}>
+												{reviews?.length} отзывов
+											</p>
+										</div>
+										<p className={styles['rooms-item__title']}>
+											{title}
+										</p>
+										<p className={styles['rooms-item__description']}>
+											{description}
+										</p>
+										<p className={styles['rooms-item__price']}>
+											<GalleonSVG />
+											{price} галлеонов / сутки
+										</p>
+									</div>
+								</Link>
+							),
+						)}
+					</div>
+					<Button
+						style={{ margin: '50px auto 0' }}
+						onClick={() => setCurrentPage((prev) => prev + 1)}
+					>
+						Загрузить еще
+					</Button>
 				</section>
-				<Button onClick={() => setCurrentPage((prev) => prev + 1)}>
-					Загрузить еще
-				</Button>
 			</div>
 			<div className={styles.main__right}>
 				<Form
@@ -77,13 +123,11 @@ const MainPage = () => {
 					<Select
 						name="roomType"
 						options={roomTypeOptions}
-						defaultValue={roomTypeOptions[1]}
 						isMulti={true}
 						placeholder="Тип комнаты"
 					/>
 					<GuestsCounter name="guests" />
 					<PriceRange name="priceRange" />
-					<Button type="submit">Найти подходящий номер</Button>
 				</Form>
 			</div>
 		</div>

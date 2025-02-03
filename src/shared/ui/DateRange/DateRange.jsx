@@ -39,7 +39,13 @@ export const DateRange = forwardRef(({ name, value = [], ...props }, ref) => {
 								{...props}
 							/>
 							{!!errors[name] && (
-								<p className="error">{String(errors[name]?.message)}</p>
+								<p className="error">
+									{String(
+										errors[name]?.message ||
+											errors[name]?.[0]?.message ||
+											errors[name]?.[1]?.message,
+									)}
+								</p>
 							)}
 						</div>
 					);

@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Button } from '../Button/Button';
+import { useClickOutside } from '@/shared/hooks';
 import styles from './GuestsCounter.module.scss';
 
 export const GuestsCounter = ({ name }) => {
-	const { control } = useFormContext();
+	const {
+		control,
+		formState: { errors },
+	} = useFormContext();
 
 	const [isOpen, setIsOpen] = useState(false);
+	const dropdownRef = useClickOutside(() => setIsOpen(false));
 
 	const handleGuestChanging = () => {
 		setIsOpen(!isOpen);
@@ -21,7 +26,7 @@ export const GuestsCounter = ({ name }) => {
 				const { value = { adults: 1, children: 0 }, onChange } = field;
 
 				return (
-					<div>
+					<div ref={dropdownRef}>
 						<button
 							className={styles.dropdown}
 							type="button"
@@ -29,6 +34,15 @@ export const GuestsCounter = ({ name }) => {
 						>
 							{value.adults} взрослых — {value.children} детей
 						</button>
+						{!!errors[name] && (
+							<p className="error">
+								{String(
+									errors[name]?.message ||
+										errors[name].children?.message ||
+										errors[name].adults?.message,
+								)}
+							</p>
+						)}
 						{isOpen && (
 							<div className={styles.dropdown__inner}>
 								<div className={styles.dropdown__row}>

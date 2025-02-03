@@ -1,4 +1,5 @@
-import { Logo } from '../../../shared/ui/Logo/Logo';
+import { Logo } from '@/shared/ui/Logo/Logo';
+import GitHubSVG from '@/shared/assets/github.svg?react';
 import styles from './Footer.module.scss';
 
 export const Footer = () => {
@@ -12,9 +13,15 @@ export const Footer = () => {
 						<p>Письма отправляйте совиной почтой по адресу выше</p>
 					</div>
 					<div className={styles.footer__socials}>
-						<div />
-						<div />
-						<div />
+						<a href="https://github.com/OlyaMosienko">
+							<GitHubSVG stroke="var(--bg-color)" />
+						</a>
+						<a href="https://github.com/OlyaMosienko">
+							<GitHubSVG stroke="var(--bg-color)" />
+						</a>
+						<a href="https://github.com/OlyaMosienko">
+							<GitHubSVG stroke="var(--bg-color)" />
+						</a>
 					</div>
 				</div>
 			</div>

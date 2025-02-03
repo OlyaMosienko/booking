@@ -41,6 +41,13 @@
       "registed_at": "22.10.2024",
       "role_id": 1,
       "id": "qk1IgXh"
+    },
+    {
+      "login": "user1",
+      "password": "user111",
+      "registed_at": "03.02.2025",
+      "role_id": 1,
+      "id": "zMJqfF9"
     }
   ],
   "roles": [
@@ -377,14 +384,14 @@
   ],
   "sessions": [
     {
-      "hash": "0.04467952885870518642263959918636828660964965820313",
+      "hash": "0.84286052727624261038386066502425819635391235351563",
       "user": {
         "id": "001",
         "login": "olya",
         "password": "aloha111",
         "roleId": 0
       },
-      "id": 5
+      "id": 1
     }
   ]
 }

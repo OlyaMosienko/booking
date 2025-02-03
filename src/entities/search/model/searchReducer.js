@@ -2,7 +2,7 @@ import { ACTION_TYPE } from '@/shared/lib';
 
 const initialSearchState = {
 	dateRange: [],
-	roomType: 'standard',
+	roomType: [],
 	guests: {
 		adults: 1,
 		children: 0,

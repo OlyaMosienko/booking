@@ -3,7 +3,7 @@ import * as yup from 'yup';
 export const searchRoomSchema = yup.object().shape({
 	dateRange: yup
 		.array()
-		.of(yup.date().required('Укажите дату'))
+		.of(yup.date().required('Укажите дату начала и конца'))
 		.min(2, 'Укажите диапазон дат')
 		.max(2, 'Укажите только начало и конец диапазона'),
 	roomType: yup

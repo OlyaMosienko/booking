@@ -21,35 +21,37 @@ export const Select = ({
 				control={control}
 				defaultValue={defaultValue}
 				render={({ field }) => (
-					<ReactSelect
-						options={options}
-						value={
-							isMulti
-								? options.filter((option) =>
-										field.value?.includes(option.value),
-									)
-								: options.find(
-										(option) => option.value === field.value,
-									) || null
-						}
-						onChange={(selected) =>
-							field.onChange(
+					<div className={styles.select}>
+						<ReactSelect
+							options={options}
+							value={
 								isMulti
-									? selected.map((opt) => opt.value)
-									: selected?.value || null,
-							)
-						}
-						onBlur={field.onBlur}
-						classNamePrefix="form-select"
-						isMulti={isMulti}
-						{...rest}
-						noOptionsMessage={() => 'Выбраны все доступные типы комнат'}
-					/>
+									? options.filter((option) =>
+											field.value?.includes(option.value),
+										)
+									: options.find(
+											(option) => option.value === field.value,
+										) || null
+							}
+							onChange={(selected) =>
+								field.onChange(
+									isMulti
+										? selected.map((opt) => opt.value)
+										: selected?.value || null,
+								)
+							}
+							onBlur={field.onBlur}
+							classNamePrefix="form-select"
+							isMulti={isMulti}
+							{...rest}
+							noOptionsMessage={() => 'Выбраны все доступные типы комнат'}
+						/>
+						{!!errors[name] && (
+							<p className="error">{String(errors[name]?.message)}</p>
+						)}
+					</div>
 				)}
 			/>
-			{!!errors[name] && (
-				<p className={styles.error}>{String(errors[name]?.message)}</p>
-			)}
 		</>
 	);
 };
