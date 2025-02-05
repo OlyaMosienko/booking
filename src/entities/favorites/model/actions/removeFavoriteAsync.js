@@ -1,7 +1,7 @@
 import { removeFavorite } from './removeFavorite';
 
-export const removeFavoriteAsync = (requestServer, userId, favoriteId) => (dispatch) => {
-	requestServer('removeFavoriteRoom', userId, favoriteId).then(() => {
-		dispatch(removeFavorite(favoriteId));
+export const removeFavoriteAsync = (requestServer, userId, roomId) => (dispatch) => {
+	requestServer('removeFavoriteRoom', userId, roomId).then((id) => {
+		dispatch(removeFavorite(id));
 	});
 };

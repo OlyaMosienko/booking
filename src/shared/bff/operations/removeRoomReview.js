@@ -4,7 +4,7 @@ import { deleteReview, getRoom } from '../api';
 import { getRoomReviewsWithAuthor } from '../utils/getRoomReviewsWithAuthor';
 
 export const removeRoomReview = async (hash, roomId, id) => {
-	const accessRoles = [ROLE.ADMIN];
+	const accessRoles = [ROLE.ADMIN, ROLE.RESIDENT];
 	const access = await sessions.access(hash, accessRoles);
 
 	if (!access) {

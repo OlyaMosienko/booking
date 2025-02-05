@@ -7,6 +7,8 @@ import { Title } from '@/shared/ui/Title/Title';
 import { loadRoomAsync } from '@/entities/room/model/actions';
 import { Button } from '@/shared/ui/Button/Button';
 import GalleonSVG from '@/shared/assets/galleon.svg?react';
+import FavoriteSVG from '@/shared/assets/favorite.svg?react';
+import ArrowSVG from '@/shared/assets/arrow.svg?react';
 import { Reviews } from './components/Reviews/Reviews';
 import styles from './RoomPage.module.scss';
 import { useModal } from '@/app/providers/ModalProvider/lib/useModal';
@@ -20,6 +22,7 @@ import { addBookingAsync } from '@/entities/bookings/model/actions/addBookingAsy
 import { DEFAULT_BOOKING_PARAMS } from '@/shared/lib';
 import { useToast } from '@/app/providers/ToastProvider/lib/useToast';
 import { getRoomTypeLabel } from '@/entities/room/lib';
+import { AddToFavoritesButton } from '@/features/favorites/addToFavorite';
 
 const RoomPage = () => {
 	const [error, setError] = useState(null);
@@ -78,13 +81,20 @@ const RoomPage = () => {
 	) : (
 		<>
 			<div>
-				<div>
-					<button onClick={() => navigate(-1)}>Назад</button>
-					<button onClick={handleFavoriteToggle}>
-						{isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'}
+				<div className={`${styles['room__nav-panel']} ${styles['nav-panel']}`}>
+					<button onClick={() => navigate(-1)}>
+						<ArrowSVG />
+						Назад
 					</button>
+					<AddToFavoritesButton roomId={params.id} />
+					{/* <button onClick={handleFavoriteToggle}>
+						{isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'}
+						<FavoriteSVG
+							className={`${styles['fav-svg']} ${isFavorite ? 'fill' : 'empty'}`}
+						/>
+					</button> */}
 				</div>
-				<div className={styles.room}>
+				<article className={styles.room}>
 					<div className={styles.room__thumb}>
 						<img src={image_url} />
 					</div>
@@ -110,7 +120,9 @@ const RoomPage = () => {
 							onClick={() =>
 								openModal(
 									<div>
-										<p>Хотите забронировать этот номер?</p>
+										<p className="modal__title">
+											Хотите забронировать этот номер?
+										</p>
 										<p>
 											Дата:
 											{`${bookingData.checkInDate.toLocaleDateString()} - ${bookingData.checkOutDate.toLocaleDateString()}`}
@@ -136,15 +148,19 @@ const RoomPage = () => {
 												return totalCost.toFixed(2);
 											})()}
 										</p>
-										<Button onClick={handleBookingClick}>Да</Button>
-										<Button
-											onClick={() => {
-												closeModal();
-												navigate('/');
-											}}
-										>
-											Посмотрю еще
-										</Button>
+										<div className="modal__btns">
+											<Button onClick={handleBookingClick}>
+												Да
+											</Button>
+											<Button
+												onClick={() => {
+													closeModal();
+													navigate('/');
+												}}
+											>
+												Посмотрю еще
+											</Button>
+										</div>
 									</div>,
 								)
 							}
@@ -152,7 +168,7 @@ const RoomPage = () => {
 							Забронировать!
 						</Button>
 					</div>
-				</div>
+				</article>
 			</div>
 			<Reviews roomId={params.id} reviews={reviews} />
 		</>

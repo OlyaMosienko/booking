@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useServerRequest } from '@/shared/hooks';
 import { selectSearchParams } from '@/entities/search/model/selectors';
@@ -16,10 +15,9 @@ import {
 	Select,
 	Title,
 } from '@/shared/ui';
-import GalleonSVG from '@/shared/assets/galleon.svg?react';
 import { searchRoomSchema } from '../lib/searchRoomSchema';
 import styles from './MainPage.module.scss';
-import { getRoomTypeLabel } from '@/entities/room/lib';
+import { Room } from '@/entities/room';
 
 const MainPage = () => {
 	const [rooms, setRooms] = useState([]);
@@ -56,54 +54,9 @@ const MainPage = () => {
 				<section className={styles.rooms}>
 					<Title>Доступные номера</Title>
 					<div className={styles['rooms__list']}>
-						{rooms.map(
-							({
-								id,
-								imageUrl,
-								title,
-								description,
-								type,
-								price,
-								reviews,
-							}) => (
-								<Link
-									className={styles['rooms-item']}
-									key={id + title}
-									to={`/room/${id}`}
-								>
-									<div className={styles['rooms-item__thumb']}>
-										<img src={imageUrl} />
-										<span
-											className={
-												styles['rooms-item__thumb-showmore']
-											}
-										>
-											Узнать больше &#129106;
-										</span>
-									</div>
-									<div className={styles['rooms-item__about']}>
-										<div className={styles['rooms-item__head']}>
-											<p className={styles['rooms-item__type']}>
-												{getRoomTypeLabel(type)}
-											</p>
-											<p className={styles['rooms-item__reviews']}>
-												{reviews?.length} отзывов
-											</p>
-										</div>
-										<p className={styles['rooms-item__title']}>
-											{title}
-										</p>
-										<p className={styles['rooms-item__description']}>
-											{description}
-										</p>
-										<p className={styles['rooms-item__price']}>
-											<GalleonSVG />
-											{price} галлеонов / сутки
-										</p>
-									</div>
-								</Link>
-							),
-						)}
+						{rooms.map((room) => (
+							<Room key={room.id} room={room} />
+						))}
 					</div>
 					<Button
 						style={{ margin: '50px auto 0' }}

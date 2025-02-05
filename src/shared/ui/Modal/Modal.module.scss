@@ -1,5 +1,5 @@
 .modal {
-	--transition-time: .3s;
+	--transition-time: 0.3s;
 
 	position: fixed;
 	left: 0;
@@ -7,7 +7,7 @@
 	right: 0;
 	bottom: 0;
 	z-index: 100;
-	background-color: rgba(0,0,0, 0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	backdrop-filter: blur(10px);
 	cursor: pointer;
 	overflow-y: auto;
@@ -19,7 +19,9 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	transition: opacity var(--transition-time), visibility var(--transition-time);
+	transition:
+		opacity var(--transition-time),
+		visibility var(--transition-time);
 
 	&:global(.active) {
 		opacity: 1;
@@ -36,7 +38,6 @@
 		border-radius: 8px;
 		cursor: default;
 		text-align: left;
-		animation: modal-slide-top-animation .6s ease;
 	}
 }
 
@@ -48,18 +49,21 @@
 	right: 0;
 	cursor: pointer;
 	font-size: 9px;
-    font-weight: 900;
-    background: transparent;
+	font-weight: 900;
+	background: transparent;
 	color: inherit;
-    border: none;
+	border: none;
 }
 
-@keyframes modal-slide-top-animation {
-	from {
-		top: -100%;
-	}
-	to {
-		top: 0;
-	}
+:global .modal__title {
+	font-family: var(--font-title);
+	font-size: 32px;
+	line-height: 1.1;
+	text-align: center;
+	margin-bottom: 16px;
 }
-
+:global .modal__btns {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+}

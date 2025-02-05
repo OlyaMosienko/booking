@@ -7,13 +7,14 @@ export const getFavoriteRoomsDetails = async (hash, userId) => {
 	const accessRoles = [ROLE.ADMIN, ROLE.RESIDENT];
 	const access = await sessions.access(hash, accessRoles);
 	if (!access) {
-		return {
-			error: 'Доступ запрещен',
-			res: null,
-		};
+		return { error: 'Доступ запрещен', res: null };
 	}
 
 	const favorites = await getFavorites(userId);
+
+	if (favorites.length === 0) {
+		return { error: null, res: [] };
+	}
 
 	const roomIds = favorites.map((fav) => `id=${fav.roomId}`).join('&');
 	const response = await fetch(`http://localhost:3005/rooms?${roomIds}`);

@@ -1,0 +1,82 @@
+.rooms-item {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	&__thumb {
+		position: relative;
+		border-radius: 4px;
+		overflow: hidden;
+		& img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			max-height: 320px;
+			object-fit: cover;
+			transition: 0.3s;
+		}
+	}
+	&__thumb-showmore {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		transition: 0.3s;
+		background: rgba($color: #000000, $alpha: 0.3);
+	}
+	&__about {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+	}
+	&__head {
+		display: flex;
+		align-items: baseline;
+		gap: 16px;
+	}
+	&__type {
+		font-size: 14px;
+		font-weight: 700;
+		text-transform: capitalize;
+		line-height: 1;
+		margin: 16px 0;
+		padding: 6px 8px;
+		background: var(--tag-bg);
+		border-radius: 4px;
+		width: max-content;
+	}
+	&__reviews {
+		font-size: 14px;
+		font-weight: 500;
+	}
+	&__title {
+		font-size: 32px;
+		font-family: var(--font-title);
+		letter-spacing: 2px;
+		line-height: 1.1;
+	}
+	&__description {
+		margin-top: 12px;
+	}
+	&__price {
+		font-size: 20px;
+		font-weight: 700;
+		display: flex;
+		align-items: end;
+		flex-grow: 1;
+		gap: 6px;
+		margin: 20px 0 0;
+	}
+
+	&:hover {
+		& .rooms-item__thumb-showmore {
+			opacity: 1;
+		}
+	}
+}

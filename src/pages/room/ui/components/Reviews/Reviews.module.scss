@@ -16,6 +16,36 @@
 		padding: 32px;
 		border-radius: 8px;
 	}
+
+	&__empty {
+		text-align: center;
+	}
+	&__form {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		margin-bottom: 20px;
+
+		& textarea {
+			color: var(--secondary-color);
+			background: var(--input-bg);
+			border: 1px solid var(--input-bg);
+			border-radius: 8px;
+			padding: 12px 18px;
+			outline: none;
+			resize: none;
+			resize: vertical;
+			width: 100%;
+			min-width: 350px;
+			max-width: 500px;
+			max-height: 150px;
+			transition: 0.2s;
+
+			&::placeholder {
+				color: rgba(var(--secondary-color), 70%);
+			}
+		}
+	}
 }
 
 .reviews-item {
@@ -24,5 +54,16 @@
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 20px;
+	}
+	&__head-left {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+	&__delete {
+		color: inherit;
+		background: transparent;
+		border: none;
+		cursor: pointer;
 	}
 }

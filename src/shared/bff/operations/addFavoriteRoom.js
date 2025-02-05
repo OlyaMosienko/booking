@@ -11,6 +11,7 @@ export const addFavoriteRoom = async (hash, userId, roomId) => {
 			res: null,
 		};
 	}
+	console.log('userId:', userId, 'roomId:', roomId);
 
 	await addFavorite(userId, roomId);
 	const favorites = await getFavorites(userId);
