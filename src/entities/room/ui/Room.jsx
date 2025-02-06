@@ -1,10 +1,6 @@
 import { Link, useMatch } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { getRoomTypeLabel } from '../lib';
 import GalleonSVG from '@/shared/assets/galleon.svg?react';
-import { useServerRequest } from '@/shared/hooks';
-import { selectUserId } from '../../user/model/selectors';
-import { removeFavoriteAsync } from '../../favorites/model/actions';
 import styles from './Room.module.scss';
 import { AddToFavoritesButton } from '@/features/favorites/addToFavorite';
 
@@ -12,13 +8,6 @@ export const Room = ({
 	room: { id, title, imageUrl, type, description, price, reviews },
 }) => {
 	const isFavoritesPage = !!useMatch('/favorites');
-	const dispatch = useDispatch();
-	const userId = useSelector(selectUserId);
-	const requestServer = useServerRequest();
-
-	const handleFavoriteToggle = (id) => {
-		dispatch(removeFavoriteAsync(requestServer, userId, id));
-	};
 
 	return (
 		<div className={styles['rooms-item']}>

@@ -1,66 +1,57 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useServerRequest } from '@/shared/hooks';
 import { selectRoom } from '@/entities/room/model/selectors';
-import { Title } from '@/shared/ui/Title/Title';
 import { loadRoomAsync } from '@/entities/room/model/actions';
-import { Button } from '@/shared/ui/Button/Button';
-import GalleonSVG from '@/shared/assets/galleon.svg?react';
-import FavoriteSVG from '@/shared/assets/favorite.svg?react';
-import ArrowSVG from '@/shared/assets/arrow.svg?react';
-import { Reviews } from './components/Reviews/Reviews';
-import styles from './RoomPage.module.scss';
-import { useModal } from '@/app/providers/ModalProvider/lib/useModal';
-import { selectFavorites } from '@/entities/favorites/model/selectors';
 import { selectUserId } from '@/entities/user/model/selectors';
-import { removeFavoriteAsync } from '@/entities/favorites/model/actions/removeFavoriteAsync';
-import { addFavoriteAsync } from '@/entities/favorites/model/actions/addFavoriteAsync';
-import { loadFavoritesAsync } from '@/entities/favorites/model/actions/loadFavoritesAsync';
+import { loadFavoritesAsync } from '@/entities/favorites/model/actions';
 import { selectSearchParams } from '@/entities/search/model/selectors';
 import { addBookingAsync } from '@/entities/bookings/model/actions/addBookingAsync';
 import { DEFAULT_BOOKING_PARAMS } from '@/shared/lib';
+import { Title } from '@/shared/ui/Title/Title';
+import { Button } from '@/shared/ui/Button/Button';
+import GalleonSVG from '@/shared/assets/galleon.svg?react';
+import { useModal } from '@/app/providers/ModalProvider/lib/useModal';
 import { useToast } from '@/app/providers/ToastProvider/lib/useToast';
 import { getRoomTypeLabel } from '@/entities/room/lib';
-import { AddToFavoritesButton } from '@/features/favorites/addToFavorite';
+import { NotFoundPage } from '../../not-found';
+import { NavPanel } from './components/NavPanel/NavPanel';
+import { Reviews } from './components/Reviews/Reviews';
+import styles from './RoomPage.module.scss';
 
 const RoomPage = () => {
 	const [error, setError] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
 	const dispatch = useDispatch();
 	const requestServer = useServerRequest();
 	const params = useParams();
 	const room = useSelector(selectRoom);
 	const navigate = useNavigate();
-	const favorites = useSelector(selectFavorites);
 	const userId = useSelector(selectUserId);
 	const searchParams = useSelector(selectSearchParams);
 	const { showToast } = useToast();
 
 	const { dateRange, guests } = searchParams;
 
-	useEffect(() => {
-		dispatch(loadRoomAsync(requestServer, params.id)).then((roomData) => {
-			setError(roomData.error);
-		});
+	useLayoutEffect(() => {
+		if (!params.id) {
+			setIsLoading(false);
+			return;
+		}
+
+		dispatch(loadRoomAsync(requestServer, params.id))
+			.then((roomData) => {
+				setError(roomData.error);
+			})
+			.finally(() => setIsLoading(false));
 
 		dispatch(loadFavoritesAsync(requestServer, userId));
 	}, [dispatch, params.id, requestServer, userId]);
 
 	const { title, image_url, description, type, price, amenities, reviews } = room;
 
-	const isFavorite = favorites?.some((fav) => fav.roomId === params.id);
-
 	const { openModal, closeModal } = useModal();
-
-	const handleFavoriteToggle = () => {
-		if (isFavorite) {
-			const favorite = favorites.find((fav) => fav.roomId === params.id);
-
-			dispatch(removeFavoriteAsync(requestServer, userId, favorite.id));
-		} else {
-			dispatch(addFavoriteAsync(requestServer, userId, params.id));
-		}
-	};
 
 	const bookingData = {
 		userId,
@@ -76,27 +67,21 @@ const RoomPage = () => {
 		showToast({ message: 'Номер успешно забронирован!', type: 'success' });
 	};
 
+	if (isLoading) return null;
+
+	if (!room || !room.id) {
+		return <NotFoundPage />;
+	}
+
 	return error ? (
 		<div>{error}</div>
 	) : (
 		<>
 			<div>
-				<div className={`${styles['room__nav-panel']} ${styles['nav-panel']}`}>
-					<button onClick={() => navigate(-1)}>
-						<ArrowSVG />
-						Назад
-					</button>
-					<AddToFavoritesButton roomId={params.id} />
-					{/* <button onClick={handleFavoriteToggle}>
-						{isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'}
-						<FavoriteSVG
-							className={`${styles['fav-svg']} ${isFavorite ? 'fill' : 'empty'}`}
-						/>
-					</button> */}
-				</div>
+				<NavPanel roomId={params.id} />
 				<article className={styles.room}>
 					<div className={styles.room__thumb}>
-						<img src={image_url} />
+						<img src={image_url} alt={title} />
 					</div>
 					<div className={styles.room__about}>
 						<Title>{title}</Title>

@@ -1,5 +1,9 @@
+import { AboutPage } from '@/pages/about';
+import { AdminPage } from '@/pages/admin';
+import { BookingsPage } from '@/pages/bookings';
 import { Favorites } from '@/pages/favorites';
 import { MainPage } from '@/pages/main';
+import { NotFoundPage } from '@/pages/not-found';
 import { RoomPage } from '@/pages/room';
 import { RegisterPage, SignInPage } from '@/pages/sign-in';
 
@@ -34,7 +38,7 @@ export const routeConfig = {
 	},
 	[AppRoutes.ABOUT]: {
 		path: RoutePaths.about,
-		element: <div>Страница о гостинице</div>,
+		element: <AboutPage />,
 	},
 	[AppRoutes.SIGN_IN]: {
 		path: RoutePaths.login,
@@ -50,11 +54,11 @@ export const routeConfig = {
 	},
 	[AppRoutes.BOOKINGS]: {
 		path: RoutePaths.bookings,
-		element: <div>Страница о забронированных номерах пользователя</div>,
+		element: <BookingsPage />,
 	},
 	[AppRoutes.ADMIN]: {
 		path: RoutePaths.admin,
-		element: <div>Страница администратора</div>,
+		element: <AdminPage />,
 	},
 	[AppRoutes.ROOM]: {
 		path: RoutePaths.room,
@@ -62,6 +66,6 @@ export const routeConfig = {
 	},
 	[AppRoutes.NOT_FOUND]: {
 		path: RoutePaths.not_found,
-		element: <div>Страница не найдена</div>,
+		element: <NotFoundPage />,
 	},
 };

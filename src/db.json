@@ -296,6 +296,11 @@
       "user_id": "001",
       "room_id": "2",
       "id": 6
+    },
+    {
+      "user_id": "001",
+      "room_id": "2",
+      "id": 7
     }
   ],
   "bookings": [

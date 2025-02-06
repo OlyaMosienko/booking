@@ -2,12 +2,6 @@
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: 24px;
-	&__nav-panel {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 40px;
-	}
 
 	&__thumb {
 		width: 100%;
@@ -69,22 +63,5 @@
 		align-items: center;
 		gap: 6px;
 		margin: 24px 0 18px;
-	}
-}
-
-.nav-panel {
-	& button {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-weight: 400;
-		color: var(--secondary-color);
-		background: transparent;
-		border: none;
-		cursor: pointer;
-		transition: 0.3s;
-		&:hover {
-			opacity: 0.7;
-		}
 	}
 }
