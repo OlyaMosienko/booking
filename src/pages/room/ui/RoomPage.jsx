@@ -4,20 +4,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useServerRequest } from '@/shared/hooks';
 import { selectRoom } from '@/entities/room/model/selectors';
 import { loadRoomAsync } from '@/entities/room/model/actions';
-import { selectUserId } from '@/entities/user/model/selectors';
+import { selectUserId, selectUserRole } from '@/entities/user/model/selectors';
 import { loadFavoritesAsync } from '@/entities/favorites/model/actions';
 import { selectSearchParams } from '@/entities/search/model/selectors';
 import { addBookingAsync } from '@/entities/bookings/model/actions/addBookingAsync';
-import { DEFAULT_BOOKING_PARAMS } from '@/shared/lib';
-import { Title } from '@/shared/ui/Title/Title';
-import { Button } from '@/shared/ui/Button/Button';
+import { DEFAULT_BOOKING_PARAMS, ROLE } from '@/shared/lib';
+import { Button, Loader, Title } from '@/shared/ui';
 import GalleonSVG from '@/shared/assets/galleon.svg?react';
 import { useModal } from '@/app/providers/ModalProvider/lib/useModal';
 import { useToast } from '@/app/providers/ToastProvider/lib/useToast';
 import { getRoomTypeLabel } from '@/entities/room/lib';
 import { NotFoundPage } from '../../not-found';
-import { NavPanel } from './components/NavPanel/NavPanel';
-import { Reviews } from './components/Reviews/Reviews';
+import { NavPanel, Reviews } from './components';
 import styles from './RoomPage.module.scss';
 
 const RoomPage = () => {
@@ -29,6 +27,7 @@ const RoomPage = () => {
 	const room = useSelector(selectRoom);
 	const navigate = useNavigate();
 	const userId = useSelector(selectUserId);
+	const userRole = useSelector(selectUserRole);
 	const searchParams = useSelector(selectSearchParams);
 	const { showToast } = useToast();
 
@@ -67,11 +66,18 @@ const RoomPage = () => {
 		showToast({ message: 'Номер успешно забронирован!', type: 'success' });
 	};
 
-	if (isLoading) return null;
+	if (isLoading) return <Loader />;
 
 	if (!room || !room.id) {
 		return <NotFoundPage />;
 	}
+
+	const daysCount =
+		(bookingData.checkOutDate - bookingData.checkInDate) / (1000 * 60 * 60 * 24);
+	const totalCost =
+		daysCount *
+		price *
+		(bookingData.guests.adults + bookingData.guests.children * 0.5);
 
 	return error ? (
 		<div>{error}</div>
@@ -101,57 +107,44 @@ const RoomPage = () => {
 							<GalleonSVG />
 							{price} галлеон/сутки
 						</p>
-						<Button
-							onClick={() =>
-								openModal(
-									<div>
-										<p className="modal__title">
-											Хотите забронировать этот номер?
-										</p>
-										<p>
-											Дата:
-											{`${bookingData.checkInDate.toLocaleDateString()} - ${bookingData.checkOutDate.toLocaleDateString()}`}
-										</p>
-										<p>
-											Количество гостей:
-											{`${bookingData.guests.adults} взрослых - ${bookingData.guests.children} детей`}
-										</p>
-										<p>Стоимость за сутки: {price}</p>
-										<p>
-											Итого:{' '}
-											{(() => {
-												const daysCount =
-													(bookingData.checkOutDate -
-														bookingData.checkInDate) /
-													(1000 * 60 * 60 * 24);
-												const totalCost =
-													daysCount *
-													price *
-													(bookingData.guests.adults +
-														bookingData.guests.children *
-															0.5);
-												return totalCost.toFixed(2);
-											})()}
-										</p>
-										<div className="modal__btns">
-											<Button onClick={handleBookingClick}>
-												Да
-											</Button>
-											<Button
-												onClick={() => {
-													closeModal();
-													navigate('/');
-												}}
-											>
-												Посмотрю еще
-											</Button>
-										</div>
-									</div>,
-								)
-							}
-						>
-							Забронировать!
-						</Button>
+						{userRole === ROLE.GUEST ? null : (
+							<Button
+								onClick={() =>
+									openModal(
+										<div>
+											<p className="modal__title">
+												Хотите забронировать этот номер?
+											</p>
+											<p>
+												Дата:
+												{`${bookingData.checkInDate.toLocaleDateString()} - ${bookingData.checkOutDate.toLocaleDateString()}`}
+											</p>
+											<p>
+												Количество гостей:
+												{`${bookingData.guests.adults} взрослых - ${bookingData.guests.children} детей`}
+											</p>
+											<p>Стоимость за сутки: {price}</p>
+											<p>Итого: {totalCost.toFixed(0)}</p>
+											<div className="modal__btns">
+												<Button onClick={handleBookingClick}>
+													Да
+												</Button>
+												<Button
+													onClick={() => {
+														closeModal();
+														navigate('/');
+													}}
+												>
+													Посмотрю еще
+												</Button>
+											</div>
+										</div>,
+									)
+								}
+							>
+								Забронировать!
+							</Button>
+						)}
 					</div>
 				</article>
 			</div>

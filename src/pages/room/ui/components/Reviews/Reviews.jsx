@@ -1,21 +1,25 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Title } from '@/shared/ui/Title/Title';
-import { Button } from '@/shared/ui/Button/Button';
 import { addReviewsAsync, removeReviewsAsync } from '@/entities/room/model/actions';
-import { selectUserId, selectUserLogin } from '@/entities/user/model/selectors';
+import {
+	selectUserId,
+	selectUserLogin,
+	selectUserRole,
+} from '@/entities/user/model/selectors';
 import { useServerRequest } from '@/shared/hooks';
-import styles from './Reviews.module.scss';
 import { useModal } from '@/app/providers/ModalProvider/lib/useModal';
 import { useToast } from '@/app/providers/ToastProvider/lib/useToast';
 import TrashSVG from '@/shared/assets/trash.svg?react';
+import { ROLE } from '@/shared/lib';
+import { Button, Title } from '@/shared/ui';
+import styles from './Reviews.module.scss';
 
 export const Reviews = ({ roomId, reviews }) => {
 	const [newReview, setNewReview] = useState('');
 	const [isNewReviewFormOpen, setIsNewReviewFormOpen] = useState(false);
 	const userId = useSelector(selectUserId);
 	const userLogin = useSelector(selectUserLogin);
-	// const userRole = useSelector(selectUserRole);
+	const userRole = useSelector(selectUserRole);
 	const dispatch = useDispatch();
 	const requestServer = useServerRequest();
 	const { showToast } = useToast();
@@ -23,6 +27,7 @@ export const Reviews = ({ roomId, reviews }) => {
 	const onNewReviewAdd = (userId, roomId, content) => {
 		dispatch(addReviewsAsync(requestServer, userId, roomId, content));
 		setNewReview('');
+		showToast({ message: 'Комментарий добавлен!', type: 'success' });
 		setIsNewReviewFormOpen(!isNewReviewFormOpen);
 	};
 
@@ -102,9 +107,11 @@ export const Reviews = ({ roomId, reviews }) => {
 					</Button>
 				</div>
 			)}
-			<Button onClick={() => setIsNewReviewFormOpen(!isNewReviewFormOpen)}>
-				{isNewReviewFormOpen ? 'Написать позже' : 'Оставить отзыв'}
-			</Button>
+			{userRole === ROLE.GUEST ? null : (
+				<Button onClick={() => setIsNewReviewFormOpen(!isNewReviewFormOpen)}>
+					{isNewReviewFormOpen ? 'Написать позже' : 'Оставить отзыв'}
+				</Button>
+			)}
 		</div>
 	);
 };

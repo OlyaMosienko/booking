@@ -3,11 +3,6 @@
 @forward './themes/dark.scss';
 @forward './themes/light.scss';
 
-body {
-	font-family: var(--font-main);
-	font-size: 16px;
-}
-
 .app {
 	font: var(--font-m);
 	font-weight: 300;
@@ -22,7 +17,6 @@ body {
 .content {
 	padding-top: 16px;
 	padding-bottom: 160px;
-	// TODO: пока просто для верстки, позже поменять стили на актуальные
 }
 
 .container {

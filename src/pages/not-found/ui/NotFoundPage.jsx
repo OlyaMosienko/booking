@@ -1,6 +1,6 @@
+import { Link } from 'react-router-dom';
 import { Title } from '@/shared/ui';
 import styles from './NotFoundPage.module.scss';
-import { Link } from 'react-router-dom';
 
 export const NotFoundPage = () => {
 	return (

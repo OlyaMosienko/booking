@@ -8,6 +8,7 @@ import {
 import { useServerRequest } from '@/shared/hooks';
 import FavoriteSVG from '@/shared/assets/favorite.svg?react';
 import styles from './AddToFavoritesButton.module.scss';
+import { useToast } from '@/app/providers/ToastProvider/lib/useToast';
 
 export const AddToFavoritesButton = ({ roomId }) => {
 	const favorites = useSelector(selectFavorites);
@@ -15,14 +16,15 @@ export const AddToFavoritesButton = ({ roomId }) => {
 	const requestServer = useServerRequest();
 	const userId = useSelector(selectUserId);
 	const dispatch = useDispatch();
+	const { showToast } = useToast();
 
 	const handleFavoriteToggle = () => {
 		if (isFavorite) {
-			// const favorite = favorites.find((fav) => fav.roomId === roomId);
-
 			dispatch(removeFavoriteAsync(requestServer, userId, roomId));
+			showToast({ message: 'Номер удалён из избранных!', type: 'success' });
 		} else {
 			dispatch(addFavoriteAsync(requestServer, userId, roomId));
+			showToast({ message: 'Номер добавлен в избранные!', type: 'success' });
 		}
 	};
 

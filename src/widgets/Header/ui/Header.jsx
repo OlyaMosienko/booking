@@ -1,16 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Logo } from '../../../shared/ui/Logo/Logo';
-import { Button } from '../../../shared/ui/Button/Button';
-import styles from './Header.module.scss';
-import { ROLE } from '@/shared/lib';
 import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '@/entities/user/model/actions';
 import {
 	selectUserLogin,
 	selectUserRole,
 	selectUserSession,
-} from '@/entities/user/model/selectors'; // TODO юзера видимо надо в виджеты или в шаред
-import { logout } from '@/entities/user/model/actions';
+} from '@/entities/user/model/selectors'; // TODO юзера видимо надо entities
+import { Button, Logo } from '@/shared/ui';
+import { ROLE } from '@/shared/lib';
 import LogoutIcon from '@/shared/assets/log-out.svg?react';
+import styles from './Header.module.scss';
 
 export const Header = () => {
 	const navigate = useNavigate();
@@ -29,12 +28,16 @@ export const Header = () => {
 						<Link to="/about" className={styles.header__link}>
 							О гостинице
 						</Link>
-						<Link to="/favorites" className={styles.header__link}>
-							Избранное
-						</Link>
-						<Link to="/bookings" className={styles.header__link}>
-							Мои брони
-						</Link>
+						{roleId === ROLE.GUEST ? null : (
+							<>
+								<Link to="/favorites" className={styles.header__link}>
+									Избранное
+								</Link>
+								<Link to="/bookings" className={styles.header__link}>
+									Мои брони
+								</Link>
+							</>
+						)}
 						{roleId === ROLE.ADMIN ? (
 							<Link to="/admin" className={styles.header__link}>
 								Панель администратора
