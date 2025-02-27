@@ -1,4 +1,7 @@
 import { Title } from '@/shared/ui';
+import interiorImg1 from '@/shared/assets/Interior_of_the_Leaky_Cauldron.jpg';
+import interiorImg2 from '@/shared/assets/cauldron.jpeg';
+import interiorImg3 from '@/shared/assets/leaky-cauldron-room-resize.webp';
 import styles from './AboutPage.module.scss';
 
 export const AboutPage = () => {
@@ -6,9 +9,9 @@ export const AboutPage = () => {
 		<div className={styles.about}>
 			<Title textAlign="center">О Гостинице</Title>
 			<div className={styles.about__images}>
-				<img src="" alt="" />
-				<img src="" alt="" />
-				<img src="" alt="" />
+				<img src={interiorImg1} alt="Интерьер гостиницы 1" />
+				<img src={interiorImg2} alt="Интерьер гостиницы 2" />
+				<img src={interiorImg3} alt="Интерьер гостиницы 3" />
 			</div>
 			<div className={styles.about__text}>
 				<p>
