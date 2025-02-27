@@ -1,0 +1,58 @@
+.booking {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	&__room-details {
+		display: flex;
+		align-items: center;
+		gap: 40px;
+	}
+
+	&__img {
+		width: 150px;
+		height: 150px;
+		object-fit: cover;
+		border-radius: 4px;
+	}
+
+	&__room {
+		font-size: 32px;
+		font-family: var(--font-title);
+		letter-spacing: 2px;
+		line-height: 1.1;
+	}
+
+	&__price {
+		font-size: 20px;
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin: 24px 0 18px;
+	}
+
+	&__user,
+	&__guests,
+	&__dates {
+		font-size: 18px;
+		font-weight: 600;
+	}
+
+	&__guests,
+	&__dates {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+	&__guests-details {
+		display: flex;
+		flex-direction: column;
+	}
+
+	& + & {
+		margin-top: 40px;
+		padding-top: 40px;
+		border-top: 1px solid #464646;
+	}
+}

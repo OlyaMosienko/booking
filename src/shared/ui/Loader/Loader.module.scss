@@ -18,6 +18,19 @@
 	align-items: center;
 	justify-content: center;
 	perspective: 9000px;
+
+	&_mini {
+		background-color: transparent;
+		backdrop-filter: none;
+		overflow: hidden;
+		position: static;
+		margin-top: 50px;
+
+		& svg {
+			height: 80px;
+		}
+	}
+
 	&__svg {
 		height: 100px;
 		transform-style: preserve-3d;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useServerRequest } from '@/shared/hooks';
 import { PAGINATION_LIMIT } from '@/shared/lib';
-import { Button, Title } from '@/shared/ui';
+import { Button, Loader, Title } from '@/shared/ui';
 import styles from './MainPage.module.scss';
 import { Room } from '@/entities/room';
 import { SearchRoomForm } from '@/features/search/ui/SearchRoomForm';
@@ -9,13 +9,18 @@ import { SearchRoomForm } from '@/features/search/ui/SearchRoomForm';
 const MainPage = () => {
 	const [rooms, setRooms] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const requestServer = useServerRequest();
 
 	useEffect(() => {
-		requestServer('fetchRooms', PAGINATION_LIMIT, currentPage).then((roomsData) => {
-			setRooms([...rooms, ...roomsData.res]);
-		});
+		setIsLoading(true);
+
+		requestServer('fetchRooms', PAGINATION_LIMIT, currentPage)
+			.then((roomsData) => {
+				setRooms([...rooms, ...roomsData.res]);
+			})
+			.finally(() => setIsLoading(false));
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [requestServer, currentPage]);
@@ -38,6 +43,7 @@ const MainPage = () => {
 							<Room key={room.id} room={room} />
 						))}
 					</div>
+					{isLoading && <Loader minSize={true} />}
 					<Button
 						style={{ margin: '50px auto 0' }}
 						onClick={() => setCurrentPage((prev) => prev + 1)}

@@ -10,3 +10,4 @@ export * from './PriceRange/PriceRange';
 export * from './Select/Select';
 export * from './Title/Title';
 export * from './Toast/Toast';
+export * from './BookingRow';
