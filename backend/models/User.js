@@ -6,6 +6,7 @@ const UserSchema = mongoose.Schema(
         login: {
             type: String,
             require: true,
+            unique: true,
         },
         password: {
             type: String,
@@ -21,4 +22,4 @@ const UserSchema = mongoose.Schema(
 
 const User = mongoose.model('User', UserSchema);
 
-module.exports = User;
+module.exports = { User };
