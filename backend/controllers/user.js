@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../models/User');
-const generate = require('../helpers/generate');
+const { generate } = require('../helpers/token');
 const ROLES = require('../constants/roles');
 
 // register
@@ -12,10 +12,9 @@ async function register(login, password) {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const user = await User.create({ login, password: passwordHash });
-    // const token = generate({ id: user.id });
+    const token = generate({ id: user.id });
 
-    // return { user, token };
-    return user;
+    return { user, token };
 }
 
 // login
@@ -42,9 +41,9 @@ function getUsers() {
 function getRoles() {
     return [
         { id: ROLES.ADMIN, name: 'Admin' },
-        { id: ROLES.MODERATOR, name: 'Moderator' },
-        { id: ROLES.USER, name: 'User' },
+        { id: ROLES.RESIDENT, name: 'Resident' },
+        { id: ROLES.GUEST, name: 'Guest' },
     ];
 }
 
-module.exports = { register, login };
+module.exports = { register, login, getUsers };
