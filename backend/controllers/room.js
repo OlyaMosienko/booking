@@ -1,4 +1,4 @@
-const { Room } = require('../models/Room');
+const Room = require('../models/Room');
 
 // get list with search and pagination
 async function getRooms(
@@ -51,10 +51,8 @@ async function getRooms(
 }
 
 // get item
-async function getRoom(id) {
-    const room = await Room.findById(id);
-
-    return room;
+function getRoom(id) {
+    return Room.findById(id).populate({ path: 'reviews', populate: 'author' });
 }
 
 // edit room
@@ -62,6 +60,8 @@ async function editRoom(id, room) {
     const newRoom = await Room.findByIdAndUpdate(id, room, {
         returnDocument: 'after',
     });
+
+    await newRoom.populate({ path: 'reviews', populate: 'author' });
 
     return newRoom;
 }

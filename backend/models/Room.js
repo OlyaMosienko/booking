@@ -45,7 +45,7 @@ const RoomSchema = mongoose.Schema(
         reviews: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Reviews',
+                ref: 'Review',
             },
         ],
     },
@@ -54,4 +54,4 @@ const RoomSchema = mongoose.Schema(
 
 const Room = mongoose.model('Room', RoomSchema);
 
-module.exports = { Room };
+module.exports = Room;
