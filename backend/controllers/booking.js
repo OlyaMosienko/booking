@@ -29,7 +29,6 @@ async function removeBooking(userId, bookingId) {
     }
 
     await Booking.deleteOne({ _id: bookingId });
-    return { message: 'Booking removed' };
 }
 
 // get user's bookings list
