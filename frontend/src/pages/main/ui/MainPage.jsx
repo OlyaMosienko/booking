@@ -1,29 +1,32 @@
 import { useEffect, useState } from 'react';
-import { useServerRequest } from '@/shared/hooks';
-import { PAGINATION_LIMIT } from '@/shared/lib';
+import { useSelector } from 'react-redux';
+import { PAGINATION_LIMIT, request } from '@/shared/lib';
 import { Button, Loader, Title } from '@/shared/ui';
-import styles from './MainPage.module.scss';
 import { Room } from '@/entities/room';
+import { selectSearchParams } from '@/entities/search/model/selectors';
 import { SearchRoomForm } from '@/features/search/ui/SearchRoomForm';
+import { createQueryString } from '../lib';
+import styles from './MainPage.module.scss';
 
 const MainPage = () => {
 	const [rooms, setRooms] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [lastPage, setLastPage] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
-
-	const requestServer = useServerRequest();
+	const searchParams = useSelector(selectSearchParams);
 
 	useEffect(() => {
 		setIsLoading(true);
 
-		requestServer('fetchRooms', PAGINATION_LIMIT, currentPage)
-			.then((roomsData) => {
-				setRooms([...rooms, ...roomsData.res]);
+		request(createQueryString(searchParams, PAGINATION_LIMIT, currentPage))
+			.then(({ data: { lastPage, rooms: loadedRooms } }) => {
+				setLastPage(lastPage);
+				setRooms([...rooms, ...loadedRooms]);
 			})
 			.finally(() => setIsLoading(false));
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [requestServer, currentPage]);
+	}, [searchParams, currentPage]);
 
 	return (
 		<div className={styles.main__box}>
@@ -44,12 +47,14 @@ const MainPage = () => {
 						))}
 					</div>
 					{isLoading && <Loader minSize={true} />}
-					<Button
-						style={{ margin: '50px auto 0' }}
-						onClick={() => setCurrentPage((prev) => prev + 1)}
-					>
-						Загрузить еще
-					</Button>
+					{lastPage === currentPage ? null : (
+						<Button
+							style={{ margin: '50px auto 0' }}
+							onClick={() => setCurrentPage((prev) => prev + 1)}
+						>
+							Загрузить еще
+						</Button>
+					)}
 				</section>
 			</div>
 			<div className={styles.main__right}>

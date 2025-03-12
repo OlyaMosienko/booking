@@ -14,17 +14,11 @@ export const App = () => {
 
 	const dispatch = useDispatch();
 	useLayoutEffect(() => {
-		const currentUserDataJSON = sessionStorage.getItem('userData');
-		if (!currentUserDataJSON) {
-			return;
-		}
-		const currentUserData = JSON.parse(currentUserDataJSON);
-		dispatch(
-			setUser({
-				...currentUserData,
-				roleId: Number(currentUserData.roleId),
-			}),
-		);
+		const currentUserData = sessionStorage.getItem('userData');
+
+		if (!currentUserData) return;
+
+		dispatch(setUser(JSON.parse(currentUserData)));
 	}, [dispatch]);
 
 	return (

@@ -1,40 +1,15 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Title } from '../../../shared/ui/Title/Title';
-import { Button } from '../../../shared/ui/Button/Button';
-import { Input } from '../../../shared/ui/Input/Input';
-import { server } from '../../../shared/bff';
-import styles from './SignInPage.module.scss';
-import { useResetForm } from '../lib/hooks';
+import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Button, Input, Title } from '@/shared/ui';
+import { request, ROLE } from '@/shared/lib';
 import { setUser } from '@/entities/user/model/actions';
 import { selectUserRole } from '@/entities/user/model/selectors';
-import { ROLE } from '@/shared/lib';
-import { Navigate } from 'react-router-dom';
-
-const regFormSchema = yup.object().shape({
-	login: yup
-		.string()
-		.required('Заполните логин')
-		.matches(/^\w+$/, 'Неверно заполнен логин. Допускаются только буквы и цифры')
-		.min(3, 'Неверно заполнен логин. Минимум 3 символа')
-		.max(15, 'Неверно заполнен логин. Максимум 15 символов'),
-	password: yup
-		.string()
-		.required('Заполните пароль')
-		.matches(
-			/^[\w#%]+$/,
-			'Неверно заполнен пароль. Допускаются буквы, цифры и знаки # и %',
-		)
-		.min(6, 'Неверно заполнен пароль. Минимум 6 символов')
-		.max(20, 'Неверно заполнен пароль. Максимум 20 символов'),
-	passcheck: yup
-		.string()
-		.required('Заполните повтор пароля')
-		.oneOf([yup.ref('password'), null], 'Пароль не совпадает'),
-});
+import { useResetForm } from '../lib/hooks';
+import { regFormSchema } from '../model';
+import styles from './SignInPage.module.scss';
 
 const RegisterPage = () => {
 	const {
@@ -59,14 +34,14 @@ const RegisterPage = () => {
 	useResetForm(reset);
 
 	const onSubmit = ({ login, password }) => {
-		server.register(login, password).then(({ error, res }) => {
+		request('/api/register', 'POST', { login, password }).then(({ error, user }) => {
 			if (error) {
 				setServerError(`Ошибка запроса: ${error}`);
 				return;
 			}
 
-			dispatch(setUser(res));
-			sessionStorage.setItem('userData', JSON.stringify(res));
+			dispatch(setUser(user));
+			sessionStorage.setItem('userData', JSON.stringify(user));
 		});
 	};
 

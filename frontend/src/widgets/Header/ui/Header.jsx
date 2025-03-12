@@ -1,11 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@/entities/user/model/actions';
-import {
-	selectUserLogin,
-	selectUserRole,
-	selectUserSession,
-} from '@/entities/user/model/selectors'; // TODO юзера видимо надо entities
+import { selectUserLogin, selectUserRole } from '@/entities/user/model/selectors';
 import { Button, Logo } from '@/shared/ui';
 import { ROLE } from '@/shared/lib';
 import LogoutIcon from '@/shared/assets/log-out.svg?react';
@@ -17,7 +13,6 @@ export const Header = () => {
 
 	const roleId = useSelector(selectUserRole);
 	const userLogin = useSelector(selectUserLogin);
-	const userSession = useSelector(selectUserSession);
 
 	return (
 		<header className={styles.header}>
@@ -49,7 +44,7 @@ export const Header = () => {
 							Вход / регистрация
 						</Button>
 					) : (
-						<Button onClick={() => dispatch(logout(userSession))}>
+						<Button onClick={() => dispatch(logout())}>
 							{userLogin}
 							<LogoutIcon />
 						</Button>

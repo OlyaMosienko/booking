@@ -1,8 +1,7 @@
-import { server } from '@/shared/bff';
-import { ACTION_TYPE } from '@/shared/lib';
+import { ACTION_TYPE, request } from '@/shared/lib';
 
 export const logout = (session) => {
-	server.logout(session);
+	request('/api/logout', 'POST', session);
 
 	return {
 		type: ACTION_TYPE.LOGOUT,
