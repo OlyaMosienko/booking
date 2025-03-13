@@ -1,7 +1,8 @@
-import { setRoomData } from './setRoomData';
+import { request } from '@/shared/lib';
+import { addReview } from './addReview';
 
-export const addReviewsAsync = (requestServer, userId, roomId, content) => (dispatch) => {
-	requestServer('addRoomReview', userId, roomId, content).then((roomData) => {
-		dispatch(setRoomData(roomData.res));
+export const addReviewsAsync = (roomId, content) => (dispatch) => {
+	request(`/api/rooms/${roomId}/reviews`, 'POST', { content }).then((reviewData) => {
+		dispatch(addReview(reviewData.data));
 	});
 };

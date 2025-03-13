@@ -1,7 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useServerRequest } from '@/shared/hooks';
 import { selectRoom } from '@/entities/room/model/selectors';
 import { loadRoomAsync } from '@/entities/room/model/actions';
 import { selectUserId, selectUserRole } from '@/entities/user/model/selectors';
@@ -22,7 +21,6 @@ const RoomPage = () => {
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const dispatch = useDispatch();
-	const requestServer = useServerRequest();
 	const params = useParams();
 	const room = useSelector(selectRoom);
 	const navigate = useNavigate();
@@ -39,16 +37,16 @@ const RoomPage = () => {
 			return;
 		}
 
-		dispatch(loadRoomAsync(requestServer, params.id))
+		dispatch(loadRoomAsync(params.id))
 			.then((roomData) => {
 				setError(roomData.error);
 			})
 			.finally(() => setIsLoading(false));
 
-		dispatch(loadFavoritesAsync(requestServer, userId));
-	}, [dispatch, params.id, requestServer, userId]);
+		dispatch(loadFavoritesAsync());
+	}, [dispatch, params.id, userId]);
 
-	const { title, image_url, description, type, price, amenities, reviews } = room;
+	const { title, imageUrl, description, type, price, amenities, reviews } = room;
 
 	const { openModal, closeModal } = useModal();
 
@@ -61,7 +59,7 @@ const RoomPage = () => {
 	};
 
 	const handleBookingClick = () => {
-		dispatch(addBookingAsync(requestServer, userId, bookingData));
+		dispatch(addBookingAsync(bookingData));
 		closeModal();
 		showToast({ message: 'Номер успешно забронирован!', type: 'success' });
 	};
@@ -87,7 +85,7 @@ const RoomPage = () => {
 				<NavPanel roomId={params.id} />
 				<article className={styles.room}>
 					<div className={styles.room__thumb}>
-						<img src={image_url} alt={title} />
+						<img src={imageUrl} alt={title} />
 					</div>
 					<div className={styles.room__about}>
 						<Title>{title}</Title>

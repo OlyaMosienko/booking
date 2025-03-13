@@ -1,13 +1,11 @@
-import { useTheme } from './providers/ThemeProvider/lib/useTheme';
-import { Footer } from '../widgets/Footer';
-import { Header } from '../widgets/Header';
-import { AppRouter } from './providers/router';
-import { Modal } from '@/shared/ui/Modal/Modal';
-import './styles/index.scss';
-import { useDispatch } from 'react-redux';
 import { useLayoutEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useTheme } from './providers/ThemeProvider/lib/useTheme';
+import { AppRouter } from './providers/router';
 import { setUser } from '@/entities/user/model/actions';
-import { Toast } from '@/shared/ui/Toast/Toast';
+import { Footer, Header } from '@/widgets';
+import { Modal, ThemeSwitcher, Toast } from '@/shared/ui';
+import './styles/index.scss';
 
 export const App = () => {
 	const { theme, toggleTheme } = useTheme();
@@ -27,9 +25,7 @@ export const App = () => {
 			<main className="content">
 				<div className="container flex">
 					<AppRouter />
-					<button className="theme-toggle-btn" onClick={toggleTheme}>
-						{theme === 'dark' ? 'Люмос!' : 'Нокс!'}
-					</button>
+					<ThemeSwitcher theme={theme} toggleTheme={toggleTheme} />
 				</div>
 			</main>
 			<Modal />

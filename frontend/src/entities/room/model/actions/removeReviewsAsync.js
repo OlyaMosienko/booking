@@ -1,7 +1,8 @@
-import { setRoomData } from './setRoomData';
+import { request } from '@/shared/lib';
+import { removeReview } from './removeReview';
 
-export const removeReviewsAsync = (requestServer, roomId, id) => (dispatch) => {
-	requestServer('removeRoomReview', roomId, id).then((roomData) =>
-		dispatch(setRoomData(roomData.res)),
+export const removeReviewsAsync = (roomId, id) => (dispatch) => {
+	request(`/api/rooms/${roomId}/reviews/${id}`, 'DELETE').then(() =>
+		dispatch(removeReview(id)),
 	);
 };

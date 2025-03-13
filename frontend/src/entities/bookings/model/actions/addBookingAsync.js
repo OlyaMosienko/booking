@@ -1,7 +1,8 @@
+import { request } from '@/shared/lib';
 import { addBooking } from './addBooking';
 
-export const addBookingAsync = (requestServer, userId, bookingData) => (dispatch) => {
-	requestServer('addNewBooking', userId, bookingData).then((bookingData) => {
-		dispatch(addBooking(bookingData.res));
+export const addBookingAsync = (bookingData) => (dispatch) => {
+	request('/api/booking', 'POST', bookingData).then((bookingData) => {
+		dispatch(addBooking(bookingData.data));
 	});
 };

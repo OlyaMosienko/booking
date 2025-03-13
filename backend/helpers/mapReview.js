@@ -3,6 +3,6 @@ module.exports = function (review) {
         id: review._id,
         content: review.content,
         author: review.author.login,
-        publishedAt: review.createdAt,
+        publishedAt: review.createdAt.toLocaleDateString(),
     };
 };

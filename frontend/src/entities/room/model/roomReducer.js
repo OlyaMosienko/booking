@@ -13,7 +13,7 @@ const initialRoomState = {
 		adults: 0,
 		children: 0,
 	},
-	reviewsCount: 0,
+	reviews: [],
 };
 
 export const roomReducer = (state = initialRoomState, { type, payload }) => {
@@ -22,6 +22,18 @@ export const roomReducer = (state = initialRoomState, { type, payload }) => {
 			return {
 				...state,
 				...payload,
+			};
+		}
+		case ACTION_TYPE.ADD_REVIEW: {
+			return {
+				...state,
+				reviews: [...state.reviews, payload],
+			};
+		}
+		case ACTION_TYPE.REMOVE_REVIEW: {
+			return {
+				...state,
+				reviews: state.reviews.filter((review) => review.id !== payload),
 			};
 		}
 		default:

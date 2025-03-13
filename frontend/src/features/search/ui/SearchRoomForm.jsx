@@ -19,6 +19,7 @@ export const SearchRoomForm = () => {
 			defaultValues={searchParams}
 			resolver={yupResolver(searchRoomSchema)}
 			onSubmit={onSearch}
+			buttonText="Найти подходящий номер"
 		>
 			<DateRange name="dateRange" />
 			<Select

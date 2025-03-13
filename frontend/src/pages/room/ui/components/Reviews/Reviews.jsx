@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReviewsAsync, removeReviewsAsync } from '@/entities/room/model/actions';
-import {
-	selectUserId,
-	selectUserLogin,
-	selectUserRole,
-} from '@/entities/user/model/selectors';
-import { useServerRequest } from '@/shared/hooks';
+import { selectUserLogin, selectUserRole } from '@/entities/user/model/selectors';
 import { useModal } from '@/app/providers/ModalProvider/lib/useModal';
 import { useToast } from '@/app/providers/ToastProvider/lib/useToast';
 import TrashSVG from '@/shared/assets/trash.svg?react';
@@ -17,15 +12,13 @@ import styles from './Reviews.module.scss';
 export const Reviews = ({ roomId, reviews }) => {
 	const [newReview, setNewReview] = useState('');
 	const [isNewReviewFormOpen, setIsNewReviewFormOpen] = useState(false);
-	const userId = useSelector(selectUserId);
 	const userLogin = useSelector(selectUserLogin);
 	const userRole = useSelector(selectUserRole);
 	const dispatch = useDispatch();
-	const requestServer = useServerRequest();
 	const { showToast } = useToast();
 
-	const onNewReviewAdd = (userId, roomId, content) => {
-		dispatch(addReviewsAsync(requestServer, userId, roomId, content));
+	const onNewReviewAdd = (roomId, content) => {
+		dispatch(addReviewsAsync(roomId, content));
 		setNewReview('');
 		showToast({ message: 'Комментарий добавлен!', type: 'success' });
 		setIsNewReviewFormOpen(!isNewReviewFormOpen);
@@ -34,7 +27,7 @@ export const Reviews = ({ roomId, reviews }) => {
 	const { openModal, closeModal } = useModal();
 
 	const onReviewRemove = (id) => {
-		dispatch(removeReviewsAsync(requestServer, roomId, id));
+		dispatch(removeReviewsAsync(roomId, id));
 		closeModal();
 		showToast({ message: 'Комментарий удалён!', type: 'success' });
 	};
@@ -102,7 +95,7 @@ export const Reviews = ({ roomId, reviews }) => {
 						onChange={({ target }) => setNewReview(target.value)}
 						placeholder="Опишите ваши впечатления от пребывания в этом номере"
 					></textarea>
-					<Button onClick={() => onNewReviewAdd(userId, roomId, newReview)}>
+					<Button onClick={() => onNewReviewAdd(roomId, newReview)}>
 						Отправить
 					</Button>
 				</div>

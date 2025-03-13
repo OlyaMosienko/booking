@@ -2,8 +2,16 @@ import { FormProvider, useForm } from 'react-hook-form';
 import styles from './Form.module.scss';
 import { Button } from '..';
 
-export const Form = ({ defaultValues, resolver, onSubmit, children, ...rest }) => {
+export const Form = ({
+	defaultValues,
+	resolver,
+	onSubmit,
+	children,
+	buttonText,
+	...rest
+}) => {
 	const methods = useForm({ defaultValues, resolver });
+
 	const {
 		handleSubmit,
 		formState: { isDirty, isValid },
@@ -14,7 +22,7 @@ export const Form = ({ defaultValues, resolver, onSubmit, children, ...rest }) =
 			<form className={styles.form} onSubmit={handleSubmit(onSubmit)} {...rest}>
 				{children}
 				<Button disabled={!isDirty || !isValid} type="submit">
-					Найти подходящий номер
+					{buttonText}
 				</Button>
 			</form>
 		</FormProvider>

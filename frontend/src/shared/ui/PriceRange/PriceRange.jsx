@@ -30,6 +30,7 @@ export const PriceRange = ({ name }) => {
 						<label className={styles['price-label']}>
 							Цена за сутки до{' '}
 							<Input
+								name="price-number"
 								type="number"
 								value={field.value}
 								onChange={(e) =>
@@ -42,6 +43,7 @@ export const PriceRange = ({ name }) => {
 						</label>
 						<div className={styles.wrapper}>
 							<input
+								name="price-slider"
 								className={styles['price-slider']}
 								type="range"
 								min={0}
