@@ -6,6 +6,7 @@ import { MainPage } from '@/pages/main';
 import { NotFoundPage } from '@/pages/not-found';
 import { RoomPage } from '@/pages/room';
 import { RegisterPage, SignInPage } from '@/pages/sign-in';
+import { PrivateRoute } from '../ui';
 
 export const AppRoutes = {
 	MAIN: 'main',
@@ -34,11 +35,19 @@ export const RoutePaths = {
 export const routeConfig = {
 	[AppRoutes.MAIN]: {
 		path: RoutePaths.main,
-		element: <MainPage />,
+		element: (
+			<PrivateRoute>
+				<MainPage />
+			</PrivateRoute>
+		),
 	},
 	[AppRoutes.ABOUT]: {
 		path: RoutePaths.about,
-		element: <AboutPage />,
+		element: (
+			<PrivateRoute>
+				<AboutPage />
+			</PrivateRoute>
+		),
 	},
 	[AppRoutes.SIGN_IN]: {
 		path: RoutePaths.login,
@@ -50,19 +59,35 @@ export const routeConfig = {
 	},
 	[AppRoutes.FAVORITES]: {
 		path: RoutePaths.favorites,
-		element: <Favorites />,
+		element: (
+			<PrivateRoute>
+				<Favorites />
+			</PrivateRoute>
+		),
 	},
 	[AppRoutes.BOOKINGS]: {
 		path: RoutePaths.bookings,
-		element: <BookingsPage />,
+		element: (
+			<PrivateRoute>
+				<BookingsPage />
+			</PrivateRoute>
+		),
 	},
 	[AppRoutes.ADMIN]: {
 		path: RoutePaths.admin,
-		element: <AdminPage />,
+		element: (
+			<PrivateRoute>
+				<AdminPage />
+			</PrivateRoute>
+		),
 	},
 	[AppRoutes.ROOM]: {
 		path: RoutePaths.room,
-		element: <RoomPage />,
+		element: (
+			<PrivateRoute>
+				<RoomPage />
+			</PrivateRoute>
+		),
 	},
 	[AppRoutes.NOT_FOUND]: {
 		path: RoutePaths.not_found,

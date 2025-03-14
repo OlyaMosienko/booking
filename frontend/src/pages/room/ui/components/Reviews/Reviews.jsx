@@ -74,12 +74,7 @@ export const Reviews = ({ roomId, reviews }) => {
 									)}
 								</div>
 							</div>
-							<div
-								className={styles['reviews-item__body']}
-								// contentEditable={userLogin === author}
-							>
-								{content}
-							</div>
+							<div className={styles['reviews-item__body']}>{content}</div>
 						</div>
 					))
 				) : (

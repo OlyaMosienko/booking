@@ -1,13 +1,14 @@
 import { Link, useMatch } from 'react-router-dom';
 import { getRoomTypeLabel } from '../lib';
 import GalleonSVG from '@/shared/assets/galleon.svg?react';
-import styles from './Room.module.scss';
 import { AddToFavoritesButton } from '@/features/favorites/addToFavorite';
+import { AppRoutes, RoutePaths } from '@/shared/config/routeConfig';
+import styles from './Room.module.scss';
 
 export const Room = ({
 	room: { id, title, imageUrl, type, description, price, reviews },
 }) => {
-	const isFavoritesPage = !!useMatch('/favorites');
+	const isFavoritesPage = !!useMatch(RoutePaths[AppRoutes.FAVORITES]);
 
 	return (
 		<div className={styles['rooms-item']}>

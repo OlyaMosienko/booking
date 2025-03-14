@@ -13,6 +13,20 @@
 		}
 	}
 
+	&__about {
+		position: relative;
+	}
+
+	&__edit-btn {
+		position: absolute;
+		top: 0;
+		right: 0;
+		color: inherit;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+	}
+
 	&__type {
 		font-size: 14px;
 		font-weight: 700;
@@ -63,5 +77,19 @@
 		align-items: center;
 		gap: 6px;
 		margin: 24px 0 18px;
+	}
+
+	& input,
+	& textarea {
+		font-size: inherit;
+		width: 100%;
+		background: transparent;
+		color: inherit;
+		border: none;
+		outline: none;
+		border-bottom: 1px solid #434343;
+	}
+	& textarea {
+		resize: none;
 	}
 }

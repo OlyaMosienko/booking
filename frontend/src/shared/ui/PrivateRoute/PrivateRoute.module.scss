@@ -1,0 +1,27 @@
+.private {
+	margin: 40px auto 0;
+	text-align: center;
+	& img {
+		width: 100%;
+		max-width: 500px;
+		height: auto;
+		object-fit: cover;
+		border-radius: 8px;
+	}
+	&__text {
+		text-align: center;
+		margin-top: 32px;
+	}
+	&__description {
+		max-width: 500px;
+		margin-top: 12px;
+	}
+	&__link {
+		padding-bottom: 1px;
+		border-bottom: 1px dotted var(--secondary-color);
+		transition: 0.3s;
+		&:hover {
+			border-bottom: 1px solid var(--secondary-color);
+		}
+	}
+}

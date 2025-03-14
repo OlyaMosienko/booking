@@ -1,7 +1,7 @@
 import { request } from '@/shared/lib';
 import { loadUserBookings } from './loadUserBookings';
 
-export const loadUserBookingsAsync = () => (dispatch) => {
+export const loadUserBookingsAsync = () => (dispatch) =>
 	request('/api/bookings')
 		.then((loadedUserBookings) => {
 			dispatch(loadUserBookings(loadedUserBookings.data));
@@ -9,4 +9,3 @@ export const loadUserBookingsAsync = () => (dispatch) => {
 		.catch((error) => {
 			console.error('Ошибка при загрузке бронирований пользователя:', error);
 		});
-};

@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@/entities/user/model/actions';
 import { selectUserLogin, selectUserRole } from '@/entities/user/model/selectors';
+import { AppRoutes, RoutePaths } from '@/shared/config/routeConfig';
 import { Button, Logo } from '@/shared/ui';
 import { ROLE } from '@/shared/lib';
 import LogoutIcon from '@/shared/assets/log-out.svg?react';
@@ -22,25 +23,37 @@ export const Header = () => {
 					<nav className={styles.header__nav}>
 						{roleId === ROLE.GUEST ? null : (
 							<>
-								<Link to="/about" className={styles.header__link}>
+								<Link
+									to={RoutePaths[AppRoutes.ABOUT]}
+									className={styles.header__link}
+								>
 									О гостинице
 								</Link>
-								<Link to="/favorites" className={styles.header__link}>
+								<Link
+									to={RoutePaths[AppRoutes.FAVORITES]}
+									className={styles.header__link}
+								>
 									Избранное
 								</Link>
-								<Link to="/bookings" className={styles.header__link}>
+								<Link
+									to={RoutePaths[AppRoutes.BOOKINGS]}
+									className={styles.header__link}
+								>
 									Мои брони
 								</Link>
 							</>
 						)}
 						{roleId === ROLE.ADMIN ? (
-							<Link to="/admin" className={styles.header__link}>
+							<Link
+								to={RoutePaths[AppRoutes.ADMIN]}
+								className={styles.header__link}
+							>
 								Панель администратора
 							</Link>
 						) : null}
 					</nav>
 					{roleId === ROLE.GUEST ? (
-						<Button onClick={() => navigate('/login')}>
+						<Button onClick={() => navigate(RoutePaths[AppRoutes.SIGN_IN])}>
 							Вход / регистрация
 						</Button>
 					) : (

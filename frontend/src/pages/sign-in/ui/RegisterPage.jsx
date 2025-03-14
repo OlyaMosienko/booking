@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { AppRoutes, RoutePaths } from '@/shared/config/routeConfig';
 import { Form, Input, Title } from '@/shared/ui';
 import { request, ROLE } from '@/shared/lib';
 import { setUser } from '@/entities/user/model/actions';
@@ -27,7 +28,7 @@ const RegisterPage = () => {
 	};
 
 	if (roleId !== ROLE.GUEST) {
-		return <Navigate to="/" />;
+		return <Navigate to={RoutePaths[AppRoutes.MAIN]} />;
 	}
 
 	return (

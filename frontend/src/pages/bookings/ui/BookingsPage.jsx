@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserBookings } from '@/entities/bookings/model/selectors';
 import { loadUserBookingsAsync } from '@/entities/bookings/model/actions';
@@ -8,10 +8,10 @@ import styles from './BookingsPage.module.scss';
 export const BookingsPage = () => {
 	const dispatch = useDispatch();
 	const bookings = useSelector(selectUserBookings);
-	const isLoading = !bookings;
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		dispatch(loadUserBookingsAsync());
+		dispatch(loadUserBookingsAsync()).finally(() => setIsLoading(false));
 	}, [dispatch]);
 
 	if (isLoading) {

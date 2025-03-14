@@ -12,14 +12,15 @@ const Favorites = () => {
 	const userId = useSelector(selectUserId);
 	const favoriteRooms = useSelector(selectFavorites);
 	const [error, setError] = useState(null);
-	const isLoading = favoriteRooms === null;
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		if (!userId) return;
 
 		setError(null);
+		setIsLoading(true);
 
-		dispatch(loadFavoritesAsync());
+		dispatch(loadFavoritesAsync()).finally(() => setIsLoading(false));
 	}, [dispatch, userId]);
 
 	if (error) {
@@ -37,7 +38,8 @@ const Favorites = () => {
 					<Room key={favoriteRoom.room.id} room={favoriteRoom.room} />
 				))}
 			</section>
-			{favoriteRooms?.length === 0 &&
+			{!isLoading &&
+				favoriteRooms.length === 0 &&
 				'Пока нет избранных номеров, но мы надеемся, ты найдешь их здесь!'}
 		</div>
 	);

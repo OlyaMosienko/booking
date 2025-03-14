@@ -12,3 +12,4 @@ export * from './Title/Title';
 export * from './Toast/Toast';
 export * from './BookingRow';
 export * from './ThemeSwitcher/ThemeSwitcher';
+export * from './PrivateRoute/PrivateRoute';

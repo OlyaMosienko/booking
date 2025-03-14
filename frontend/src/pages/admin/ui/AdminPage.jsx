@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadAllBookingsAsync } from '@/entities/bookings/model/actions';
 import { selectAllBookings } from '@/entities/bookings/model/selectors';
@@ -8,10 +8,10 @@ import styles from './AdminPage.module.scss';
 export const AdminPage = () => {
 	const dispatch = useDispatch();
 	const bookings = useSelector(selectAllBookings);
-	const isLoading = !bookings;
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		dispatch(loadAllBookingsAsync());
+		dispatch(loadAllBookingsAsync()).finally(() => setIsLoading(false));
 	}, [dispatch]);
 
 	if (isLoading) {
@@ -27,7 +27,7 @@ export const AdminPage = () => {
 						<BookingRow key={booking.id} booking={booking} />
 					))
 				) : (
-					<p>У вас пока нет бронирований.</p>
+					<p>В гостинице пока нет бронирований.</p>
 				)}
 			</section>
 		</div>

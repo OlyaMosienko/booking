@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { setUser } from '@/entities/user/model/actions';
 import { selectUserRole } from '@/entities/user/model/selectors';
+import { AppRoutes, RoutePaths } from '@/shared/config/routeConfig';
 import { Form, Input, Title } from '@/shared/ui';
 import { request, ROLE } from '@/shared/lib';
 import { signInDefaultValues, signInSchema } from '../model';
@@ -28,7 +29,7 @@ const SignInPage = () => {
 	};
 
 	if (roleId !== ROLE.GUEST) {
-		return <Navigate to="/" />;
+		return <Navigate to={RoutePaths[AppRoutes.MAIN]} />;
 	}
 
 	return (

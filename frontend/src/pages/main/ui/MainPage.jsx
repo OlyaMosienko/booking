@@ -20,7 +20,7 @@ const MainPage = () => {
 
 		request(createQueryString(searchParams, PAGINATION_LIMIT, currentPage))
 			.then(({ data: { lastPage, rooms: loadedRooms } }) => {
-				setLastPage(lastPage || 1);
+				setLastPage(lastPage);
 				setRooms((prevRooms) => [...prevRooms, ...loadedRooms]);
 			})
 			.finally(() => setIsLoading(false));

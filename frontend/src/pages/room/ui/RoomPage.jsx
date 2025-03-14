@@ -2,14 +2,17 @@ import { useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { selectRoom } from '@/entities/room/model/selectors';
-import { loadRoomAsync } from '@/entities/room/model/actions';
+import { loadRoomAsync, updateRoomAsync } from '@/entities/room/model/actions';
 import { selectUserId, selectUserRole } from '@/entities/user/model/selectors';
 import { loadFavoritesAsync } from '@/entities/favorites/model/actions';
 import { selectSearchParams } from '@/entities/search/model/selectors';
 import { addBookingAsync } from '@/entities/bookings/model/actions/addBookingAsync';
+import { AppRoutes, RoutePaths } from '@/shared/config/routeConfig';
 import { DEFAULT_BOOKING_PARAMS, ROLE } from '@/shared/lib';
 import { Button, Loader, Title } from '@/shared/ui';
 import GalleonSVG from '@/shared/assets/galleon.svg?react';
+import EditSVG from '@/shared/assets/edit.svg?react';
+import SaveSVG from '@/shared/assets/save.svg?react';
 import { useModal } from '@/app/providers/ModalProvider/lib/useModal';
 import { useToast } from '@/app/providers/ToastProvider/lib/useToast';
 import { getRoomTypeLabel } from '@/entities/room/lib';
@@ -20,6 +23,11 @@ import styles from './RoomPage.module.scss';
 const RoomPage = () => {
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isEditing, setIsEditing] = useState(false);
+	const [editedTitle, setEditedTitle] = useState('');
+	const [editedDescription, setEditedDescription] = useState('');
+	const [editedPrice, setEditedPrice] = useState(0);
+
 	const dispatch = useDispatch();
 	const params = useParams();
 	const room = useSelector(selectRoom);
@@ -40,6 +48,10 @@ const RoomPage = () => {
 		dispatch(loadRoomAsync(params.id))
 			.then((roomData) => {
 				setError(roomData.error);
+
+				setEditedTitle(roomData.title);
+				setEditedDescription(roomData.description);
+				setEditedPrice(roomData.price);
 			})
 			.finally(() => setIsLoading(false));
 
@@ -62,6 +74,32 @@ const RoomPage = () => {
 		dispatch(addBookingAsync(bookingData));
 		closeModal();
 		showToast({ message: 'Номер успешно забронирован!', type: 'success' });
+	};
+
+	const handleEditClick = () => {
+		if (isEditing) {
+			const updatedRoom = {
+				title: editedTitle,
+				description: editedDescription,
+				price: editedPrice,
+			};
+			dispatch(updateRoomAsync(params.id, updatedRoom))
+				.then(() => {
+					showToast({
+						message: 'Изменения успешно сохранены!',
+						type: 'success',
+					});
+					setIsEditing(false);
+				})
+				.catch((e) => {
+					showToast({
+						message: `Ошибка при сохранении изменений: ${e}`,
+						type: 'error',
+					});
+				});
+		} else {
+			setIsEditing(true);
+		}
 	};
 
 	if (isLoading) return <Loader />;
@@ -88,8 +126,31 @@ const RoomPage = () => {
 						<img src={imageUrl} alt={title} />
 					</div>
 					<div className={styles.room__about}>
-						<Title>{title}</Title>
-						<p className={styles.room__description}>{description}</p>
+						{userRole === ROLE.ADMIN && (
+							<button
+								className={styles['room__edit-btn']}
+								onClick={handleEditClick}
+							>
+								{isEditing ? <SaveSVG /> : <EditSVG />}
+							</button>
+						)}
+						{isEditing ? (
+							<input
+								type="text"
+								value={editedTitle}
+								onChange={(e) => setEditedTitle(e.target.value)}
+							/>
+						) : (
+							<Title>{title}</Title>
+						)}
+						{isEditing ? (
+							<textarea
+								value={editedDescription}
+								onChange={(e) => setEditedDescription(e.target.value)}
+							/>
+						) : (
+							<p className={styles.room__description}>{description}</p>
+						)}
 						<div className={styles.room__row}>
 							<p className={styles.room__type}>{getRoomTypeLabel(type)}</p>
 							<p className={styles.room__reviews}>
@@ -101,10 +162,18 @@ const RoomPage = () => {
 								<div key={item}>{item}</div>
 							))}
 						</div>
-						<p className={styles.room__price}>
-							<GalleonSVG />
-							{price} галлеон/сутки
-						</p>
+						{isEditing ? (
+							<input
+								type="number"
+								value={editedPrice}
+								onChange={(e) => setEditedPrice(Number(e.target.value))}
+							/>
+						) : (
+							<p className={styles.room__price}>
+								<GalleonSVG />
+								{price} галлеон/сутки
+							</p>
+						)}
 						{userRole === ROLE.GUEST ? null : (
 							<Button
 								onClick={() =>
@@ -130,7 +199,9 @@ const RoomPage = () => {
 												<Button
 													onClick={() => {
 														closeModal();
-														navigate('/');
+														navigate(
+															RoutePaths[AppRoutes.MAIN],
+														);
 													}}
 												>
 													Посмотрю еще
