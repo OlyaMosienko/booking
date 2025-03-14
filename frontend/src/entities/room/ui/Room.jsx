@@ -20,10 +20,13 @@ export const Room = ({
 			<div className={styles['rooms-item__about']}>
 				<div className={styles['rooms-item__head']}>
 					<p className={styles['rooms-item__type']}>{getRoomTypeLabel(type)}</p>
-					<p className={styles['rooms-item__reviews']}>
-						{reviews?.length} отзывов
-					</p>
-					{isFavoritesPage && <AddToFavoritesButton roomId={id} />}
+					{isFavoritesPage ? (
+						<AddToFavoritesButton roomId={id} />
+					) : (
+						<p className={styles['rooms-item__reviews']}>
+							{reviews?.length} отзывов
+						</p>
+					)}
 				</div>
 				<Link className={styles['rooms-item__title']} to={`/room/${id}`}>
 					{title}

@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 module.exports = function (booking) {
     return {
         id: booking._id,
-        checkInDate: booking.checkInDate,
-        checkOutDate: booking.checkOutDate,
+        checkInDate: booking.checkInDate.toLocaleDateString(),
+        checkOutDate: booking.checkOutDate.toLocaleDateString(),
         guests: booking.guests,
         room: mongoose.isObjectIdOrHexString(booking.room_id)
             ? booking.room_id

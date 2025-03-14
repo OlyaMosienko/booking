@@ -1,4 +1,5 @@
 const Room = require('../models/Room');
+const Booking = require('../models/Booking');
 
 // get list with search and pagination
 async function getRooms(
@@ -24,15 +25,15 @@ async function getRooms(
         filter.price = { $lte: Number(priceRange) };
     }
 
-    if (dateRange && dateRange.length === 2) {
-        const [startDate, endDate] = dateRange;
+    if (dateRange) {
+        const dates = dateRange.split(',').map((date) => new Date(date));
 
-        const bookedRooms = await Booking.distinct('roomId', {
-            $or: [
-                {
-                    startDate: { $lt: new Date(endDate) },
-                    endDate: { $gt: new Date(startDate) },
-                },
+        const [startDate, endDate] = dates;
+
+        const bookedRooms = await Booking.distinct('room_id', {
+            $and: [
+                { checkInDate: { $lt: new Date(endDate) } },
+                { checkOutDate: { $gt: new Date(startDate) } },
             ],
         });
 
@@ -43,7 +44,7 @@ async function getRooms(
         Room.find(filter)
             .limit(Number(limit))
             .skip((Number(page) - 1) * Number(limit))
-            .sort({ createdAt: -1 }),
+            .sort({ _id: 1 }),
         Room.countDocuments(filter),
     ]);
 

@@ -8,11 +8,11 @@ export function createQueryString(
 	const params = [];
 
 	const checkIn =
-		dateRange?.[0] ||
-		DEFAULT_BOOKING_PARAMS.CHECK_IN_DATE.toISOString().split('T')[0];
+		dateRange?.[0]?.toISOString() ||
+		DEFAULT_BOOKING_PARAMS.CHECK_IN_DATE.toISOString();
 	const checkOut =
-		dateRange?.[1] ||
-		DEFAULT_BOOKING_PARAMS.CHECK_OUT_DATE.toISOString().split('T')[0];
+		dateRange?.[1]?.toISOString() ||
+		DEFAULT_BOOKING_PARAMS.CHECK_OUT_DATE.toISOString();
 	params.push(`dateRange=${checkIn},${checkOut}`);
 
 	if (roomType?.length) {

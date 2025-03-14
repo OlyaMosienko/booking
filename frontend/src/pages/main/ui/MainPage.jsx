@@ -20,13 +20,16 @@ const MainPage = () => {
 
 		request(createQueryString(searchParams, PAGINATION_LIMIT, currentPage))
 			.then(({ data: { lastPage, rooms: loadedRooms } }) => {
-				setLastPage(lastPage);
-				setRooms([...rooms, ...loadedRooms]);
+				setLastPage(lastPage || 1);
+				setRooms((prevRooms) => [...prevRooms, ...loadedRooms]);
 			})
 			.finally(() => setIsLoading(false));
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams, currentPage]);
+
+	const resetRooms = () => {
+		setRooms([]);
+		setLastPage(1);
+	};
 
 	return (
 		<div className={styles.main__box}>
@@ -58,7 +61,7 @@ const MainPage = () => {
 				</section>
 			</div>
 			<div className={styles.main__right}>
-				<SearchRoomForm />
+				<SearchRoomForm resetRooms={resetRooms} />
 			</div>
 		</div>
 	);

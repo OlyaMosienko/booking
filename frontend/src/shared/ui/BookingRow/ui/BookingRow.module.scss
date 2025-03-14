@@ -21,6 +21,7 @@
 		font-family: var(--font-title);
 		letter-spacing: 2px;
 		line-height: 1.1;
+		max-width: 400px;
 	}
 
 	&__price {
@@ -54,5 +55,12 @@
 		margin-top: 40px;
 		padding-top: 40px;
 		border-top: 1px solid #464646;
+	}
+
+	&__delete {
+		color: inherit;
+		background: transparent;
+		border: none;
+		cursor: pointer;
 	}
 }

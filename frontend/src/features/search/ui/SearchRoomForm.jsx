@@ -6,11 +6,12 @@ import { roomTypeOptions } from '@/entities/room/model/roomTypeOptions';
 import { searchRoomSchema } from '../model/searchRoomSchema';
 import { DateRange, Form, GuestsCounter, PriceRange, Select } from '@/shared/ui';
 
-export const SearchRoomForm = () => {
+export const SearchRoomForm = ({ resetRooms }) => {
 	const searchParams = useSelector(selectSearchParams);
 	const dispatch = useDispatch();
 
 	const onSearch = (data) => {
+		resetRooms();
 		dispatch(setSearchParams(data));
 	};
 

@@ -20,11 +20,11 @@ export const Header = () => {
 				<div className={styles.header__box}>
 					<Logo />
 					<nav className={styles.header__nav}>
-						<Link to="/about" className={styles.header__link}>
-							О гостинице
-						</Link>
 						{roleId === ROLE.GUEST ? null : (
 							<>
+								<Link to="/about" className={styles.header__link}>
+									О гостинице
+								</Link>
 								<Link to="/favorites" className={styles.header__link}>
 									Избранное
 								</Link>

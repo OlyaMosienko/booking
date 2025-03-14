@@ -12,8 +12,8 @@ async function addBooking(
     const newBooking = await Booking.create({
         user_id: userId,
         room_id: roomId,
-        checkInDate,
-        checkOutDate,
+        checkInDate: new Date(checkInDate),
+        checkOutDate: new Date(checkOutDate),
         guests,
     });
 
