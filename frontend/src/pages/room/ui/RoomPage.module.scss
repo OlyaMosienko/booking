@@ -17,16 +17,6 @@
 		position: relative;
 	}
 
-	&__edit-btn {
-		position: absolute;
-		top: 0;
-		right: 0;
-		color: inherit;
-		background: transparent;
-		border: none;
-		cursor: pointer;
-	}
-
 	&__type {
 		font-size: 14px;
 		font-weight: 700;
@@ -82,7 +72,6 @@
 	& input,
 	& textarea {
 		font-size: inherit;
-		width: 100%;
 		background: transparent;
 		color: inherit;
 		border: none;
@@ -90,6 +79,7 @@
 		border-bottom: 1px solid #434343;
 	}
 	& textarea {
+		width: 100%;
 		resize: none;
 	}
 }

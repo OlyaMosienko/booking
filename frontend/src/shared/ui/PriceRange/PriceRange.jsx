@@ -33,8 +33,8 @@ export const PriceRange = ({ name }) => {
 								name="price-number"
 								type="number"
 								value={field.value}
-								onChange={(e) =>
-									handleChange(e.target.value, field.onChange)
+								onChange={({ target }) =>
+									handleChange(target.value, field.onChange)
 								}
 								min={0}
 								max={MAX}
@@ -50,8 +50,8 @@ export const PriceRange = ({ name }) => {
 								max={MAX}
 								step={5}
 								value={field.value}
-								onChange={(e) =>
-									handleChange(e.target.value, field.onChange)
+								onChange={({ target }) =>
+									handleChange(target.value, field.onChange)
 								}
 							/>
 							<div

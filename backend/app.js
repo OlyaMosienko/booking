@@ -6,10 +6,10 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const routes = require('./routes');
 
-const port = 3001;
+const port = 3000;
 const app = express();
 
-app.use(express.static(path.resolve('..', 'frontend', 'build')));
+app.use(express.static(path.resolve('..', 'frontend', 'dist')));
 
 app.use(cookieParser());
 app.use(express.json());

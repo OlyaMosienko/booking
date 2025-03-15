@@ -1,8 +1,3 @@
 import { lazy } from 'react';
 
-export const RoomPageAsync = lazy(
-	() =>
-		new Promise((resolve) => {
-			setTimeout(() => resolve(import('./RoomPage')), 1500);
-		}),
-);
+export const RoomPageAsync = lazy(() => import('./RoomPage'));

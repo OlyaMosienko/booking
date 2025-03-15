@@ -1,8 +1,3 @@
 import { lazy } from 'react';
 
-export const SingInPageAsync = lazy(
-	() =>
-		new Promise((resolve) => {
-			setTimeout(() => resolve(import('./SignInPage')), 1500);
-		}),
-);
+export const SingInPageAsync = lazy(() => import('./SignInPage'));
