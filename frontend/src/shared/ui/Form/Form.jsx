@@ -14,14 +14,14 @@ export const Form = ({
 
 	const {
 		handleSubmit,
-		formState: { isDirty, isValid },
+		formState: { isDirty },
 	} = methods;
 
 	return (
 		<FormProvider {...{ ...methods, onSubmit }}>
 			<form className={styles.form} onSubmit={handleSubmit(onSubmit)} {...rest}>
 				{children}
-				<Button disabled={!isDirty || !isValid} type="submit">
+				<Button disabled={!isDirty} type="submit">
 					{buttonText}
 				</Button>
 			</form>
