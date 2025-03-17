@@ -53,6 +53,9 @@
 		gap: 50px 24px;
 		margin: 32px 0 0;
 	}
+	&__empty {
+		margin-top: 32px;
+	}
 }
 
 :global(.light) {

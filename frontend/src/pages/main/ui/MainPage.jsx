@@ -44,13 +44,19 @@ const MainPage = () => {
 				</section>
 				<section className={styles.rooms}>
 					<Title>Доступные номера</Title>
-					<div className={styles['rooms__list']}>
-						{rooms.map((room) => (
-							<Room key={room.id} room={room} />
-						))}
-					</div>
+					{rooms.length > 0 ? (
+						<div className={styles['rooms__list']}>
+							{rooms.map((room) => (
+								<Room key={room.id} room={room} />
+							))}
+						</div>
+					) : (
+						<p className={styles.rooms__empty}>
+							Нет доступных номеров :( Попробуйте применить другие фильтры
+						</p>
+					)}
 					{isLoading && <Loader minSize={true} />}
-					{lastPage === currentPage ? null : (
+					{lastPage === currentPage || lastPage <= 0 ? null : (
 						<Button
 							style={{ margin: '50px auto 0' }}
 							onClick={() => setCurrentPage((prev) => prev + 1)}
